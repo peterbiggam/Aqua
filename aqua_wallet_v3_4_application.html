@@ -1384,8 +1384,17 @@
         function revealBackupSeedNow() { document.getElementById('backupSeedBox').textContent = activeWallet ? activeWallet.seed : 'No seed'; }
 
         function toggleNetworkModal() { document.getElementById('modalNetwork').classList.toggle('hidden'); }
+        function updateNetworkSelector() {
+            document.getElementById('netName').textContent = NETWORKS[currentNetwork].name;
+            Object.keys(NETWORKS).forEach(net => {
+                document.getElementById(`checkNet${net}`).classList.toggle('hidden', net !== currentNetwork);
+            });
+        }
         async function switchNetwork(net) {
-            currentNetwork = net; localStorage.setItem(STORAGE_KEY_NET, net);
+            if (!NETWORKS[net]) return;
+            currentNetwork = net;
+            localStorage.setItem(STORAGE_KEY_NET, net);
+            updateNetworkSelector();
             closeAllModals(); showToast(`Switched to XRPL ${net}`, 'success');
             if (activeWallet) await refreshAccountTelemetry(true);
         }
@@ -1393,6 +1402,7 @@
         function copyWalletAddress() { if (activeWallet) copyTextToClipboard(activeWallet.classicAddress, 'Address Copied!'); }
 
         window.addEventListener('DOMContentLoaded', () => {
+            updateNetworkSelector();
             const vault = localStorage.getItem(STORAGE_KEY_VAULT);
             if (vault) lockWalletNow(); else resetOnboarding();
         });
