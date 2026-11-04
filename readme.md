@@ -1,4 +1,4 @@
-# AQUA WALLET // XRPL Universal Command Center v3.4 MOBILE
+# AQUA WALLET // XRPL Universal Command Center v3.4.0 MOBILE
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![XRPL.js](https://img.shields.io/badge/XRPL.js-v3.1.0-cyan.svg)](https://xrpl.org)
@@ -10,7 +10,7 @@ Repository: [https://github.com/peterbiggam/Aqua](https://github.com/peterbiggam
 
 ---
 
-## ✨ Key Features (v3.4 TRENDING & MOBILE)
+## ✨ Key Features
 
 - **Mobile-First Responsive Design:** Fully optimized touch targets, fluid spacing, and responsive modals designed specifically for mobile browsers (Brave, Safari, Chrome).
 - **Portable `.aqua` Vault Backups:** Export and import encrypted vault files in the browser.
@@ -45,16 +45,22 @@ wallets are safe for real funds.
 
 ---
 
-## 🚀 Quick Start / Mobile Deployment
+## 🚀 Quick Start
 
-Because Aqua Wallet is packaged into a single HTML file (`aqua.html`), it requires no complex build pipelines.
+The wallet is a standalone HTML app and needs no build step.
 
-1. **Clone or Download:**
-   Save `aqua.html` to your device or repository.
-2. **Open in Browser:**
-   Open `aqua.html` directly in Brave, Safari, or Chrome on your mobile or desktop device.
-3. **Load Vault:**
-   Import an existing `.aqua` backup file or forge a new secure vault instantly.
+1. **Open the app:** Open `aqua_wallet_v3_4_application.html` in a modern browser.
+2. **Load a vault:** Import an encrypted `.aqua` backup or create a new vault.
+
+The existing XRPL and display libraries are loaded from public CDNs, so an
+internet connection is required.
+
+## 📦 Versions and release notes
+
+**Current version: v3.4.0.** Versions and GitHub releases are managed manually;
+pushing code does not automatically publish a release. When preparing a release,
+update the version in this README and publish release notes on the
+[GitHub Releases page](https://github.com/peterbiggam/Aqua/releases).
 
 ---
 

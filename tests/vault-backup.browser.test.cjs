@@ -70,9 +70,9 @@ async function run() {
     assert.notEqual(first.origin, fresh.origin, "Restore must use a distinct origin");
     const launchOptions = { headless: true, args: ["--no-sandbox"] };
     const executablePath =
-      process.env.REPLIT_PLAYWRIGHT_CHROMIUM_EXECUTABLE ||
+      process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE ||
       process.env.CHROMIUM_PATH ||
-      "/repl/tools/bin/chromium";
+      chromium.executablePath();
     if (fs.existsSync(executablePath)) launchOptions.executablePath = executablePath;
 
     browser = await chromium.launch(launchOptions);

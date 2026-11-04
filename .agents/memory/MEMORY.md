@@ -1,0 +1,1 @@
+- [Public repository content](public-repository-content.md) — Keep GitHub-tracked docs and metadata platform-neutral; keep local run configuration untracked.
