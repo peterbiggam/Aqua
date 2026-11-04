@@ -23,10 +23,14 @@ Never put wallet seeds or vault files in this repository or server configuration
 
 ## Verification and limitations
 
-Setup verification covers HTTP serving and the initial wallet screen, not a
-security audit, real-money transactions, or full feature validation. XRPL
-balances are shown only after a validated ledger response. Network failures
-leave the balance unavailable and do not enable simulation automatically.
+Run `node --test tests/wallet-safety.test.cjs` to verify XRPL balance validation,
+network failure handling, explicit simulation opt-in, and simulated-action
+guards. The checks use mocked XRPL responses and a test-wallet fixture; they
+never submit a transaction. Setup verification covers HTTP serving and the
+initial wallet screen, not a security audit, real-money transactions, or full
+feature validation. XRPL balances are shown only after a validated ledger
+response. Network failures leave the balance unavailable and do not enable
+simulation automatically.
 Local simulation is an explicit, separate mode; simulated actions and balances
 remain in browser storage and are never submitted to XRPL. The app does not
 currently submit XRPL transactions. Use test wallets only until transaction
