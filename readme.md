@@ -28,6 +28,21 @@ Aqua Wallet stores its encrypted vault in browser storage:
 2. **Separate Simulation Mode:** Local simulated balances and actions are explicitly labeled and are not XRPL ledger data.
 3. **No Transaction Submission:** The current app does not broadcast or claim successful XRPL transactions.
 
+## Browser backup regression test
+
+Run `npm install` once, then `npm test` to exercise disposable vault creation,
+manual locking, correct and incorrect passphrases, encrypted `.aqua` export and
+import, and restore/unlock at a different local browser origin. The test uses a
+fresh random wallet, blocks XRPL and all non-static external requests, checks
+the exported file, and scans observed request URLs and bodies for the generated
+seed. It writes temporary backup data outside the repository and removes it
+afterward.
+
+The test depends on Chromium, network access to the page's existing static CDN
+dependencies, and Web Crypto. Failures should be reported as test failures; a
+passing run is a regression check only, not a security audit or proof that
+wallets are safe for real funds.
+
 ---
 
 ## 🚀 Quick Start / Mobile Deployment
