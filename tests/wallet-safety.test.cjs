@@ -91,9 +91,15 @@ function createBrowserHarness(fetchImpl) {
             }),
             setWallet: (address) => { activeWallet = { classicAddress: address, seed: 'TEST_ONLY_FIXTURE' }; },
             getStorageKey: () => STORAGE_KEY_SIM_LEDGER,
+            getContactsKey: () => STORAGE_KEY_CONTACTS,
             getStorage: (key) => localStorage.getItem(key),
+            setStorage: (key, value) => localStorage.setItem(key, value),
             getElement: (id) => document.getElementById(id),
-            getLocalSimulationMode: () => isLocalSimulationMode
+            getLocalSimulationMode: () => isLocalSimulationMode,
+            setRenderData: ({ swaps, dids }) => {
+                atomicSwaps = swaps;
+                didCredentials = dids;
+            }
         };
     `;
 
@@ -235,4 +241,31 @@ test('simulated actions do not change local state or call XRPL while in XRPL mod
     assert.equal(harness.sandbox.__walletTest.getLocalSimulationMode(), false);
     assert.equal(harness.sandbox.__walletTest.getStorage(simLedgerKey), null);
     assert.equal(fetchCalls, 0);
+});
+
+test('untrusted stored labels and toast text render as text instead of HTML', () => {
+    const harness = createBrowserHarness(async () => validatedAccountResponse());
+    const walletTest = harness.sandbox.__walletTest;
+    const payload = '<img src=x onerror=alert(1)>';
+
+    walletTest.setRenderData({
+        swaps: [{ amount: payload, chain: payload }],
+        dids: [{ uri: payload }]
+    });
+    harness.sandbox.renderSwapsList();
+    harness.sandbox.renderDidList();
+    walletTest.setStorage(
+        walletTest.getContactsKey(),
+        JSON.stringify([{ name: payload, address: payload }])
+    );
+    harness.sandbox.renderContactsList();
+    harness.sandbox.showToast(payload);
+
+    for (const id of ['tabPanelSwaps', 'tabPanelDid', 'contactsListContainer', 'toastContainer']) {
+        const rendered = walletTest.getElement(id).innerHTML ||
+            walletTest.getElement(id).children[0]?.innerHTML ||
+            '';
+        assert.match(rendered, /&lt;img/);
+        assert.doesNotMatch(rendered, /<img\b/i);
+    }
 });

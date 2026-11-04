@@ -27,6 +27,7 @@ Aqua Wallet stores its encrypted vault in browser storage:
 1. **No Backend Database:** Zero private keys, IP addresses, or personal data are stored on external servers. All state is held locally in browser storage or encrypted `.aqua` backup files.
 2. **Separate Simulation Mode:** Local simulated balances and actions are explicitly labeled and are not XRPL ledger data.
 3. **No Transaction Submission:** The current app does not broadcast or claim successful XRPL transactions.
+4. **Browser hardening:** Fixed third-party script and stylesheet versions use Subresource Integrity; local labels are escaped before being rendered as HTML.
 
 ## Browser backup regression test
 

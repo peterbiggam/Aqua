@@ -4,16 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>AQUA WALLET // XRPL Universal Command Center v3.4 MOBILE</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" integrity="sha384-HtMZLkYo+pR5/u7zCzXxMJP6QoNnQJt1qkHM0EaOPvGDIzaVZbmYr/TlvUZ/sKAg" crossorigin="anonymous" referrerpolicy="no-referrer">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" referrerpolicy="no-referrer">
     <!-- Official XRPL.js Browser Bundle -->
-    <script src="https://unpkg.com/xrpl@3.1.0/build/xrpl-latest-min.js"></script>
+    <script src="https://unpkg.com/xrpl@3.1.0/build/xrpl-latest-min.js" integrity="sha384-zisdA5U2pGJLubJgRNKYl/EflKOuzZSPACeOJz63/pDqyjZJugi01rULTCT550Rb" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <!-- QRCode generator -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" integrity="sha384-3zSEDfvllQohrq0PHL1fOXJuC/jSOO34H46t6UQfobFOmxE5BpjjaIJY5F2/bMnU" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <!-- Phosphor Icons -->
-    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web@2.1.2" integrity="sha384-J7cw2fbG1T4C5MirTVUxsZGaMfw2m0XsCgOQEqUvB1OF9VIsHWuZF1GmyVRzs7eu" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <style>
         * {
@@ -745,6 +745,16 @@
         let didCredentials = [];
         let seedVisible = false;
 
+        function escapeHtml(value) {
+            return String(value).replace(/[&<>"']/g, character => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#39;'
+            })[character]);
+        }
+
         function showToast(message, type = 'info') {
             const container = document.getElementById('toastContainer');
             const toast = document.createElement('div');
@@ -754,7 +764,7 @@
                 error: 'bg-gray-900 bg-opacity-95 border-red-500 border-opacity-60 text-red-300'
             };
             toast.className = `w-full p-3.5 rounded-2xl border backdrop-blur-xl shadow-2xl text-xs font-mono font-bold flex items-center justify-between transition-all duration-300 ${colors[type] || colors.info}`;
-            toast.innerHTML = `<span class="truncate pr-2">${message}</span><i class="ph-bold ph-check-circle text-base shrink-0"></i>`;
+            toast.innerHTML = `<span class="truncate pr-2">${escapeHtml(message)}</span><i class="ph-bold ph-check-circle text-base shrink-0"></i>`;
             container.appendChild(toast);
             setTimeout(() => {
                 toast.style.opacity = '0';
@@ -1139,7 +1149,7 @@
             connectionStatus = 'unverified';
             updateConnectionIndicators();
             try {
-                const response = await fetch(netConfig.rpc, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ method, params: [paramsObj] }) });
+                    const response = await fetch(netConfig.rpc, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ method, params: [paramsObj] }), referrerPolicy: 'no-referrer' });
                 if (!response.ok) throw new Error(`XRPL endpoint returned HTTP ${response.status}`);
                 const data = await response.json();
                 if (!data || !data.result) throw new Error('XRPL endpoint returned no ledger result');
@@ -1266,7 +1276,7 @@
             }
             container.innerHTML = atomicSwaps.map((sw) => `
                 <div class="p-3 rounded-xl bg-gray-950 border border-gray-800 flex items-center justify-between font-mono text-xs">
-                    <div><div class="font-bold text-amber-300">${sw.amount} XRP → ${sw.chain}</div><div class="text-[10px] text-slate-400">Local simulation only</div></div>
+                    <div><div class="font-bold text-amber-300">${escapeHtml(sw.amount)} XRP → ${escapeHtml(sw.chain)}</div><div class="text-[10px] text-slate-400">Local simulation only</div></div>
                     <span class="px-2 py-0.5 rounded bg-amber-500 bg-opacity-20 text-amber-200">Simulated</span>
                 </div>
             `).join('');
@@ -1280,7 +1290,7 @@
             }
             container.innerHTML = didCredentials.map((did) => `
                 <div class="p-3 rounded-xl bg-gray-950 border border-gray-800 flex items-center justify-between font-mono text-xs">
-                    <div><div class="font-bold text-cyan-400 truncate max-w-[180px]">DID: ${did.uri}</div><div class="text-[10px] text-amber-300">Local entry • not attested</div></div>
+                    <div><div class="font-bold text-cyan-400 truncate max-w-[180px]">DID: ${escapeHtml(did.uri)}</div><div class="text-[10px] text-amber-300">Local entry • not attested</div></div>
                 </div>
             `).join('');
         }
@@ -1450,7 +1460,7 @@
             }
             container.innerHTML = c.map((x, idx) => `
                 <div class="p-2.5 bg-gray-950 rounded-xl flex items-center justify-between text-xs font-mono">
-                    <div><div class="font-bold text-cyan-300">${x.name}</div><div class="text-[10px] text-slate-400 truncate max-w-[160px]">${x.address}</div></div>
+                    <div><div class="font-bold text-cyan-300">${escapeHtml(x.name)}</div><div class="text-[10px] text-slate-400 truncate max-w-[160px]">${escapeHtml(x.address)}</div></div>
                     <button onclick="removeContact(${idx})" class="text-red-400 hover:text-red-300 p-1"><i class="ph-bold ph-trash"></i></button>
                 </div>
             `).join('');
