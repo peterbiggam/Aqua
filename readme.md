@@ -4,7 +4,7 @@
 [![XRPL.js](https://img.shields.io/badge/XRPL.js-v3.1.0-cyan.svg)](https://xrpl.org)
 [![Security: Zero-Server AES-256-GCM](https://img.shields.io/badge/Security-16%2B%20Char%20Passphrase%20%2B%20AES--256-emerald.svg)](https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto)
 
-**AQUA WALLET** is a client-side, zero-server cryptocurrency wallet built for the XRP Ledger (XRPL). Optimized for both desktop and mobile browsers, Aqua Wallet allows users to manage XRP, trustline assets, cross-chain atomic swaps, payment streams, decentralized identity (DID) credentials, and human-readable BNS handles from a single self-contained file (`aqua.html`).
+**AQUA WALLET** is a client-side wallet interface for viewing validated XRPL balances and managing an encrypted local vault. Its send, funding, swap, payment-stream, and DID controls currently run as local simulations only; they do not submit XRPL transactions. The standalone HTML file also includes local address-book and backup features.
 
 Repository: [https://github.com/peterbiggam/Aqua](https://github.com/peterbiggam/Aqua)
 
@@ -13,21 +13,20 @@ Repository: [https://github.com/peterbiggam/Aqua](https://github.com/peterbiggam
 ## ✨ Key Features (v3.4 TRENDING & MOBILE)
 
 - **Mobile-First Responsive Design:** Fully optimized touch targets, fluid spacing, and responsive modals designed specifically for mobile browsers (Brave, Safari, Chrome).
-- **Portable `.aqua` Vault Backups:** Export and import your encrypted vault files directly on your mobile device. Open `aqua.html`, load your `.aqua` file, enter your master passphrase, and command your funds anywhere.
-- **Cross-Chain Atomic Swaps:** Execute trustless, hash-time locked contract (HTLC) swaps directly between XRP and assets on Bitcoin, Ethereum, or Solana networks.
-- **Subscription & Recurring Streams:** Set up automated monthly payment streams and escrow channels for payroll or creator support.
-- **Decentralized Identity (DID) Vault:** Manage verifiable credentials and self-sovereign identity badges on-chain.
-- **BNS Human-Readable Names:** Map custom human-readable handles (e.g., `alice.xrp`) directly to XRPL addresses using the built-in registrar.
+- **Portable `.aqua` Vault Backups:** Export and import encrypted vault files in the browser.
+- **Validated XRPL Balance Reads:** View account balances only when the selected XRPL endpoint returns a validated ledger response.
+- **Local Action Simulations:** Try example send, funding, swap, payment-stream, and DID flows without submitting transactions to any ledger.
+- **Local Address Book:** Save human-readable labels for XRPL addresses in this browser.
 - **Client-Side Security:** Private keys never leave your device. Encrypted in your browser using **PBKDF2 (100,000 iterations) + AES-256-GCM**, secured by a 16+ character master passphrase.
 
 ---
 
 ## 🛡️ Security Architecture
 
-Aqua Wallet operates on a trustless client-side architecture:
+Aqua Wallet stores its encrypted vault in browser storage:
 1. **No Backend Database:** Zero private keys, IP addresses, or personal data are stored on external servers. All state is held locally in browser storage or encrypted `.aqua` backup files.
-2. **Local Cryptographic Enclave:** All signing operations happen locally in memory using official `xrpl.js` bindings.
-3. **Auto-Lock / Vault Wipe:** Manual and automatic vault locks clear sensitive memory buffers instantly.
+2. **Separate Simulation Mode:** Local simulated balances and actions are explicitly labeled and are not XRPL ledger data.
+3. **No Transaction Submission:** The current app does not broadcast or claim successful XRPL transactions.
 
 ---
 

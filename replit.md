@@ -24,8 +24,10 @@ Never put wallet seeds or vault files in this repository or server configuration
 ## Verification and limitations
 
 Setup verification covers HTTP serving and the initial wallet screen, not a
-security audit, real-money transactions, or full feature validation.
-The imported v3.4 code includes a local simulated ledger and can fall back to
-“Enclave Mode” after network failures. A successful local action is therefore
-not proof of an on-chain transaction. Use test wallets only until transaction
+security audit, real-money transactions, or full feature validation. XRPL
+balances are shown only after a validated ledger response. Network failures
+leave the balance unavailable and do not enable simulation automatically.
+Local simulation is an explicit, separate mode; simulated actions and balances
+remain in browser storage and are never submitted to XRPL. The app does not
+currently submit XRPL transactions. Use test wallets only until transaction
 handling and security have been independently reviewed.
