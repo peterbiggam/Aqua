@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>AQUA WALLET // XRPL Universal Command Center v3.4 MOBILE</title>
+    <meta name="app-version" content="3.4.1">
+    <title>AQUA WALLET // XRPL Universal Command Center</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" integrity="sha384-HtMZLkYo+pR5/u7zCzXxMJP6QoNnQJt1qkHM0EaOPvGDIzaVZbmYr/TlvUZ/sKAg" crossorigin="anonymous" referrerpolicy="no-referrer">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -95,7 +96,7 @@
             <div>
                 <div class="flex items-center space-x-1.5">
                     <span class="font-extrabold tracking-wider text-sm text-white">AQUA WALLET</span>
-                    <span class="text-[9px] font-mono uppercase px-1.5 py-0.5 rounded bg-cyan-500 bg-opacity-15 text-cyan-300 border border-cyan-500 border-opacity-30">MOBILE</span>
+                    <span id="headerVersionLabel" class="text-[9px] font-mono uppercase px-1.5 py-0.5 rounded bg-cyan-500 bg-opacity-15 text-cyan-300 border border-cyan-500 border-opacity-30">v3.4.1</span>
                 </div>
                 <p class="text-[11px] text-slate-400 flex items-center gap-1">
                     <span id="connIndicatorDot" class="w-1.5 h-1.5 rounded-full bg-slate-500 inline-block"></span>
@@ -105,13 +106,13 @@
         </div>
 
         <div class="flex items-center space-x-2">
-            <button onclick="toggleNetworkModal()" class="px-3 py-2 rounded-xl bg-gray-900 bg-opacity-90 border border-gray-800 hover:border-cyan-500 hover:border-opacity-40 flex items-center space-x-2 transition min-h-[40px]">
+            <button data-action="toggleNetworkModal" class="px-3 py-2 rounded-xl bg-gray-900 bg-opacity-90 border border-gray-800 hover:border-cyan-500 hover:border-opacity-40 flex items-center space-x-2 transition min-h-[40px]">
                 <span id="netDot" class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
                 <span id="netName" class="text-xs font-mono font-semibold text-slate-200">TESTNET</span>
                 <i class="ph ph-caret-down text-xs text-slate-400"></i>
             </button>
 
-            <button id="lockWalletBtn" onclick="lockWalletNow()" class="hidden p-2.5 rounded-xl bg-red-500 bg-opacity-10 border border-red-500 border-opacity-30 text-red-400 hover:bg-red-500 hover:bg-opacity-20 transition min-h-[40px] min-w-[40px] flex items-center justify-center" title="Immediate Vault Lock">
+        <button id="lockWalletBtn" data-action="lockWalletNow" class="hidden p-2.5 rounded-xl bg-red-500 bg-opacity-10 border border-red-500 border-opacity-30 text-red-400 hover:bg-red-500 hover:bg-opacity-20 transition min-h-[40px] min-w-[40px] flex items-center justify-center" title="Immediate Vault Lock">
                 <i class="ph-bold ph-lock-key text-base"></i>
             </button>
         </div>
@@ -149,11 +150,11 @@
                         Total Control. Zero Complexity.
                     </h1>
                     <p class="text-xs sm:text-sm text-slate-400 max-w-md mx-auto">
-                        Manage your encrypted <code class="text-cyan-300 font-mono">.aqua</code> vault locally and inspect validated XRPL balances. Transaction controls are simulations only.
+                        Manage an encrypted <code class="text-cyan-300 font-mono">.aqua</code> vault, inspect validated balances, send XRP or issued tokens, and trade through XRPL liquidity with transaction review.
                     </p>
                 </div>
 
-                <button onclick="startGuidedCreation()" class="w-full group relative overflow-hidden rounded-2xl bg-gradient-to-r from-cyan-400 via-cyan-300 to-blue-500 p-4.5 text-left shadow-lg transition transform active:scale-[0.99] min-h-[64px]">
+                <button data-action="startGuidedCreation" class="w-full group relative overflow-hidden rounded-2xl bg-gradient-to-r from-cyan-400 via-cyan-300 to-blue-500 p-4.5 text-left shadow-lg transition transform active:scale-[0.99] min-h-[64px]">
                     <div class="flex items-center justify-between">
                         <div class="space-y-0.5">
                             <span class="inline-block text-[9px] font-mono font-extrabold uppercase tracking-wider px-2 py-0.5 rounded bg-gray-950 bg-opacity-80 text-cyan-300">
@@ -173,7 +174,7 @@
                 </button>
 
                 <div class="grid grid-cols-2 gap-2.5">
-                    <button onclick="showImportStep()" class="p-3.5 rounded-2xl bg-gray-950 hover:bg-gray-800 border border-gray-800 flex items-center space-x-3 transition text-left min-h-[56px]">
+                    <button data-action="showImportStep" class="p-3.5 rounded-2xl bg-gray-950 hover:bg-gray-800 border border-gray-800 flex items-center space-x-3 transition text-left min-h-[56px]">
                         <div class="w-9 h-9 rounded-xl bg-gray-900 flex items-center justify-center text-cyan-400 shrink-0">
                             <i class="ph-bold ph-key text-base"></i>
                         </div>
@@ -191,7 +192,7 @@
                             <div class="text-xs font-bold text-white truncate">Load .aqua</div>
                             <div class="text-[10px] text-cyan-400 truncate">Vault Backup File</div>
                         </div>
-                        <input type="file" id="aquaFileInput" accept=".aqua,.json" onchange="handleAquaFileUpload(event)" class="hidden">
+                        <input type="file" id="aquaFileInput" accept=".aqua,.json" data-change-action="handleAquaFileUpload" class="hidden">
                     </label>
                 </div>
             </div>
@@ -199,7 +200,7 @@
             <!-- Key Generation Step -->
             <div id="onboardStepGenerate" class="hidden space-y-4">
                 <div class="flex items-center justify-between">
-                    <button onclick="resetOnboarding()" class="text-xs text-slate-400 hover:text-white flex items-center gap-1 min-h-[36px] items-center">
+                    <button data-action="resetOnboarding" class="text-xs text-slate-400 hover:text-white flex items-center gap-1 min-h-[36px] items-center">
                         <i class="ph-bold ph-arrow-left"></i> Back
                     </button>
                     <span class="text-xs font-mono text-cyan-400 font-bold">KEY FORGE</span>
@@ -211,7 +212,7 @@
                             <i class="ph-fill ph-cpu text-cyan-400"></i>
                             Cryptographic Key Generated
                         </span>
-                        <button onclick="regenerateNewKey()" class="text-xs font-mono text-cyan-400 hover:underline flex items-center gap-1 min-h-[36px] items-center">
+                        <button data-action="regenerateNewKey" class="text-xs font-mono text-cyan-400 hover:underline flex items-center gap-1 min-h-[36px] items-center">
                             <i class="ph-bold ph-arrows-clockwise"></i> Shuffle
                         </button>
                     </div>
@@ -226,7 +227,7 @@
                     <div>
                         <div class="flex items-center justify-between">
                             <label class="text-[10px] font-mono uppercase text-amber-400 font-bold">Master Secret Seed (NEVER SHARE)</label>
-                            <button onclick="toggleSeedVisibility()" class="text-[11px] font-mono text-cyan-300 hover:underline min-h-[36px] flex items-center" id="toggleSeedBtn">
+                            <button data-action="toggleSeedVisibility" class="text-[11px] font-mono text-cyan-300 hover:underline min-h-[36px] flex items-center" id="toggleSeedBtn">
                                 Show Secret
                             </button>
                         </div>
@@ -234,7 +235,7 @@
                             <span id="genSecretSeed" class="font-mono text-xs sm:text-sm font-bold text-amber-300 tracking-wider blur-sm transition selectable truncate pr-2">
                                 sEdXXXXXXXXXXXXXXXXXXXXXXXXXXXX
                             </span>
-                            <button onclick="copyGeneratedSeed()" class="px-3 py-2 rounded-xl bg-amber-400 text-slate-950 font-bold text-xs hover:bg-amber-300 transition shrink-0 min-h-[36px]">
+                            <button data-action="copyGeneratedSeed" class="px-3 py-2 rounded-xl bg-amber-400 text-slate-950 font-bold text-xs hover:bg-amber-300 transition shrink-0 min-h-[36px]">
                                 Copy
                             </button>
                         </div>
@@ -242,13 +243,13 @@
                 </div>
 
                 <label class="flex items-start space-x-3 p-3.5 rounded-2xl bg-gray-950 border border-gray-800 cursor-pointer hover:border-cyan-500 hover:border-opacity-40 transition">
-                    <input type="checkbox" id="seedSavedCheckbox" onchange="checkSeedSaved()" class="mt-0.5 w-5 h-5 accent-cyan-400 rounded cursor-pointer shrink-0">
+                    <input type="checkbox" id="seedSavedCheckbox" data-change-action="checkSeedSaved" class="mt-0.5 w-5 h-5 accent-cyan-400 rounded cursor-pointer shrink-0">
                     <span class="text-xs text-slate-300 leading-relaxed">
                         <strong class="text-white">I have saved my Secret Seed.</strong> I understand Aqua Wallet cannot recover funds if lost.
                     </span>
                 </label>
 
-                <button id="proceedToPinBtn" onclick="goToPasswordSetup()" disabled class="w-full py-4 rounded-2xl font-extrabold text-sm uppercase tracking-wider transition bg-gray-800 text-slate-500 cursor-not-allowed min-h-[52px]">
+                <button id="proceedToPinBtn" data-action="goToPasswordSetup" disabled class="w-full py-4 rounded-2xl font-extrabold text-sm uppercase tracking-wider transition bg-gray-800 text-slate-500 cursor-not-allowed min-h-[52px]">
                     Proceed to Vault Passphrase Setup →
                 </button>
             </div>
@@ -256,34 +257,34 @@
             <!-- Import Step -->
             <div id="onboardStepImport" class="hidden space-y-4">
                 <div class="flex items-center justify-between">
-                    <button onclick="resetOnboarding()" class="text-xs text-slate-400 hover:text-white flex items-center gap-1 min-h-[36px] items-center">
+                    <button data-action="resetOnboarding" class="text-xs text-slate-400 hover:text-white flex items-center gap-1 min-h-[36px] items-center">
                         <i class="ph-bold ph-arrow-left"></i> Back
                     </button>
                     <span class="text-xs font-mono text-cyan-400 font-bold">IMPORT WALLET</span>
                 </div>
 
                 <div class="flex border-b border-gray-800 pb-2 space-x-2">
-                    <button id="importTabSeedBtn" onclick="switchImportTab('seed')" class="flex-1 py-2 rounded-xl text-xs font-bold bg-cyan-500 bg-opacity-15 text-cyan-300 border border-cyan-500 border-opacity-30 transition min-h-[40px]">
+                    <button id="importTabSeedBtn" data-action="switchImportTab" data-value="seed" class="flex-1 py-2 rounded-xl text-xs font-bold bg-cyan-500 bg-opacity-15 text-cyan-300 border border-cyan-500 border-opacity-30 transition min-h-[40px]">
                         Secret Seed
                     </button>
-                    <button id="importTabMnemonicBtn" onclick="switchImportTab('mnemonic')" class="flex-1 py-2 rounded-xl text-xs font-bold text-slate-400 hover:text-white transition min-h-[40px]">
+                    <button id="importTabMnemonicBtn" data-action="switchImportTab" data-value="mnemonic" class="flex-1 py-2 rounded-xl text-xs font-bold text-slate-400 hover:text-white transition min-h-[40px]">
                         12 / 24-Word Phrase
                     </button>
                 </div>
 
                 <div id="importPanelSeed" class="space-y-2">
                     <label class="text-xs font-bold text-slate-300">Enter XRPL Family Seed (`sEd...` or `s...`)</label>
-                    <input type="password" id="importSeedInput" oninput="validateImportedSeed()" placeholder="sEdV19..." class="w-full p-4 rounded-2xl bg-gray-950 border border-gray-800 focus:border-cyan-400 focus:outline-none font-mono text-sm text-white">
+                    <input type="password" id="importSeedInput" data-input-action="validateImportedSeed" placeholder="sEdV19..." class="w-full p-4 rounded-2xl bg-gray-950 border border-gray-800 focus:border-cyan-400 focus:outline-none font-mono text-sm text-white">
                 </div>
 
                 <div id="importPanelMnemonic" class="hidden space-y-2">
                     <label class="text-xs font-bold text-slate-300">Enter 12 or 24-Word Recovery Phrase</label>
-                    <textarea id="importMnemonicInput" oninput="validateImportedMnemonic()" rows="3" placeholder="apple banana cherry dog..." class="w-full p-3.5 rounded-2xl bg-gray-950 border border-gray-800 focus:border-cyan-400 focus:outline-none font-mono text-xs text-white resize-none"></textarea>
+                    <textarea id="importMnemonicInput" data-input-action="validateImportedMnemonic" rows="3" placeholder="apple banana cherry dog..." class="w-full p-3.5 rounded-2xl bg-gray-950 border border-gray-800 focus:border-cyan-400 focus:outline-none font-mono text-xs text-white resize-none"></textarea>
                 </div>
 
                 <p id="importPreviewAddr" class="text-xs font-mono text-slate-400">Waiting for valid credentials...</p>
 
-                <button id="confirmImportBtn" onclick="confirmImportedCredentials()" disabled class="w-full py-4 rounded-2xl font-extrabold text-sm uppercase tracking-wider transition bg-gray-800 text-slate-500 cursor-not-allowed min-h-[52px]">
+                <button id="confirmImportBtn" data-action="confirmImportedCredentials" disabled class="w-full py-4 rounded-2xl font-extrabold text-sm uppercase tracking-wider transition bg-gray-800 text-slate-500 cursor-not-allowed min-h-[52px]">
                     Continue to Vault Encryption →
                 </button>
             </div>
@@ -291,7 +292,7 @@
             <!-- Master Passphrase Setup Step (Minimum 16 Characters) -->
             <div id="onboardStepPassword" class="hidden space-y-4">
                 <div class="flex items-center justify-between">
-                    <button onclick="resetOnboarding()" class="text-xs text-slate-400 hover:text-white flex items-center gap-1 min-h-[36px] items-center">
+                    <button data-action="resetOnboarding" class="text-xs text-slate-400 hover:text-white flex items-center gap-1 min-h-[36px] items-center">
                         <i class="ph-bold ph-arrow-left"></i> Start Over
                     </button>
                     <span class="text-xs font-mono text-emerald-400 font-bold">MASTER PASSPHRASE</span>
@@ -305,11 +306,11 @@
                 <div class="space-y-3">
                     <div>
                         <label class="text-[10px] font-mono uppercase text-slate-400">Passphrase (Min 16 Characters)</label>
-                        <input type="password" id="passphraseInput" oninput="validateMasterPassphrase()" placeholder="At least 16 characters..." class="mt-1 w-full p-4 rounded-2xl bg-gray-950 border border-gray-800 font-mono text-sm text-white focus:border-cyan-400 focus:outline-none">
+                        <input type="password" id="passphraseInput" data-input-action="validateMasterPassphrase" placeholder="At least 16 characters..." class="mt-1 w-full p-4 rounded-2xl bg-gray-950 border border-gray-800 font-mono text-sm text-white focus:border-cyan-400 focus:outline-none">
                     </div>
                     <div>
                         <label class="text-[10px] font-mono uppercase text-slate-400">Confirm Passphrase</label>
-                        <input type="password" id="passphraseConfirmInput" oninput="validateMasterPassphrase()" placeholder="Re-enter master passphrase..." class="mt-1 w-full p-4 rounded-2xl bg-gray-950 border border-gray-800 font-mono text-sm text-white focus:border-cyan-400 focus:outline-none">
+                        <input type="password" id="passphraseConfirmInput" data-input-action="validateMasterPassphrase" placeholder="Re-enter master passphrase..." class="mt-1 w-full p-4 rounded-2xl bg-gray-950 border border-gray-800 font-mono text-sm text-white focus:border-cyan-400 focus:outline-none">
                     </div>
                     <div class="flex items-center justify-between text-xs font-mono px-1">
                         <span id="passphraseLengthIndicator" class="text-red-400">Length: 0 / 16</span>
@@ -317,7 +318,7 @@
                     </div>
                 </div>
 
-                <button id="finalizeVaultBtn" onclick="finalizeVaultWithPassphrase()" disabled class="w-full py-4 rounded-2xl font-extrabold text-sm uppercase tracking-wider transition bg-gray-800 text-slate-500 cursor-not-allowed min-h-[52px]">
+                <button id="finalizeVaultBtn" data-action="finalizeVaultWithPassphrase" disabled class="w-full py-4 rounded-2xl font-extrabold text-sm uppercase tracking-wider transition bg-gray-800 text-slate-500 cursor-not-allowed min-h-[52px]">
                     Lock & Activate My Vault →
                 </button>
             </div>
@@ -336,7 +337,7 @@
 
             <div class="space-y-3">
                 <input type="password" id="unlockPassphraseInput" placeholder="Enter your 16+ char master passphrase..." class="w-full p-4 rounded-2xl bg-gray-950 border border-gray-800 font-mono text-sm text-white focus:border-cyan-400 focus:outline-none">
-                <button onclick="attemptVaultUnlockWithPassphrase()" class="w-full py-4 rounded-2xl bg-cyan-400 hover:bg-cyan-300 text-slate-950 font-extrabold text-xs uppercase tracking-wider shadow-lg transition min-h-[52px]">
+                <button data-action="attemptVaultUnlockWithPassphrase" class="w-full py-4 rounded-2xl bg-cyan-400 hover:bg-cyan-300 text-slate-950 font-extrabold text-xs uppercase tracking-wider shadow-lg transition min-h-[52px]">
                     Unlock Vault
                 </button>
             </div>
@@ -344,9 +345,9 @@
             <div class="text-center pt-2 flex flex-col space-y-2">
                 <label class="text-xs font-mono text-cyan-400 hover:underline cursor-pointer">
                     Upload different .aqua file
-                    <input type="file" accept=".aqua,.json" onchange="handleAquaFileUpload(event)" class="hidden">
+                    <input type="file" accept=".aqua,.json" data-change-action="handleAquaFileUpload" class="hidden">
                 </label>
-                <button onclick="wipeVaultConfirmation()" class="text-xs font-mono text-red-400 hover:underline">
+                <button data-action="wipeVaultConfirmation" class="text-xs font-mono text-red-400 hover:underline">
                     Wipe Vault & Reset Wallet
                 </button>
             </div>
@@ -362,22 +363,22 @@
                     <div class="flex items-center space-x-2 bg-gray-950 border border-gray-800 px-3 py-2 rounded-xl">
                         <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
                         <span id="dashAddressShort" class="font-mono text-xs text-slate-200">r...</span>
-                        <button onclick="copyWalletAddress()" class="text-cyan-400 hover:text-cyan-300 ml-1 p-1" title="Copy Address">
+                        <button data-action="copyWalletAddress" class="text-cyan-400 hover:text-cyan-300 ml-1 p-1" title="Copy Address">
                             <i class="ph-bold ph-copy text-sm"></i>
                         </button>
                     </div>
 
                     <div class="flex items-center space-x-1.5">
-                        <button onclick="refreshAccountTelemetry(true)" class="p-2.5 rounded-xl bg-gray-950 border border-gray-800 text-slate-300 hover:text-cyan-400 transition min-h-[40px] min-w-[40px] flex items-center justify-center" title="Sync Ledger Now">
+                        <button data-action="refreshAccountTelemetry" data-argument="true" class="p-2.5 rounded-xl bg-gray-950 border border-gray-800 text-slate-300 hover:text-cyan-400 transition min-h-[40px] min-w-[40px] flex items-center justify-center" title="Sync Ledger Now">
                             <i id="syncSpinner" class="ph-bold ph-arrows-clockwise text-sm"></i>
                         </button>
-                        <button onclick="openContactsModal()" class="p-2.5 rounded-xl bg-gray-950 border border-gray-800 text-slate-300 hover:text-cyan-400 transition min-h-[40px] min-w-[40px] flex items-center justify-center" title="Address Book">
+                        <button data-action="openContactsModal" class="p-2.5 rounded-xl bg-gray-950 border border-gray-800 text-slate-300 hover:text-cyan-400 transition min-h-[40px] min-w-[40px] flex items-center justify-center" title="Address Book">
                             <i class="ph-bold ph-address-book text-sm"></i>
                         </button>
-                        <button onclick="openCredentialsModal()" class="p-2.5 rounded-xl bg-gray-950 border border-gray-800 text-cyan-300 hover:text-cyan-200 transition min-h-[40px] min-w-[40px] flex items-center justify-center" title="Compliance Credentials">
+                        <button data-action="openCredentialsModal" class="p-2.5 rounded-xl bg-gray-950 border border-gray-800 text-cyan-300 hover:text-cyan-200 transition min-h-[40px] min-w-[40px] flex items-center justify-center" title="Compliance Credentials">
                             <i class="ph-bold ph-seal-check text-sm"></i>
                         </button>
-                        <button onclick="openBackupModal()" class="px-3 py-2 rounded-xl bg-amber-500 bg-opacity-10 border border-amber-500 border-opacity-30 text-amber-300 text-xs font-mono hover:bg-amber-500 hover:bg-opacity-20 transition flex items-center gap-1 min-h-[40px]">
+                        <button data-action="openBackupModal" class="px-3 py-2 rounded-xl bg-amber-500 bg-opacity-10 border border-amber-500 border-opacity-30 text-amber-300 text-xs font-mono hover:bg-amber-500 hover:bg-opacity-20 transition flex items-center gap-1 min-h-[40px]">
                             <i class="ph-bold ph-key"></i> Vault
                         </button>
                     </div>
@@ -400,50 +401,50 @@
                 </div>
 
                 <div id="faucetActionBox" class="hidden mt-4 pt-4 border-t border-gray-800 border-opacity-80">
-                    <button id="faucetBtn" onclick="addSimulatedFunding()" class="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-emerald-400 to-cyan-400 text-slate-950 font-extrabold text-xs sm:text-sm uppercase tracking-wider shadow-lg flex items-center justify-center space-x-2 transition transform active:scale-[0.99] min-h-[52px]">
+                    <button id="faucetBtn" data-action="addSimulatedFunding" class="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-emerald-400 to-cyan-400 text-slate-950 font-extrabold text-xs sm:text-sm uppercase tracking-wider shadow-lg flex items-center justify-center space-x-2 transition transform active:scale-[0.99] min-h-[52px]">
                         <i class="ph-bold ph-lightning text-lg"></i>
                         <span>Add 1,000 simulated XRP</span>
                     </button>
                 </div>
 
                 <div class="grid grid-cols-4 gap-2 mt-5">
-                    <button onclick="openCommandModal('send')" class="py-3 px-1 rounded-2xl bg-cyan-400 hover:bg-cyan-300 text-slate-950 font-extrabold text-xs flex flex-col items-center justify-center space-y-1 shadow-lg transition min-h-[58px]">
+                    <button data-action="openCommandModal" data-value="send" class="py-3 px-1 rounded-2xl bg-cyan-400 hover:bg-cyan-300 text-slate-950 font-extrabold text-xs flex flex-col items-center justify-center space-y-1 shadow-lg transition min-h-[58px]">
                         <i class="ph-bold ph-paper-plane-tilt text-lg"></i>
-                        <span>SIM SEND</span>
+                        <span>SEND</span>
                     </button>
-                    <button onclick="openCommandModal('receive')" class="py-3 px-1 rounded-2xl bg-gray-950 hover:bg-gray-800 border border-gray-800 text-white font-bold text-xs flex flex-col items-center justify-center space-y-1 transition min-h-[58px]">
+                    <button data-action="openCommandModal" data-value="receive" class="py-3 px-1 rounded-2xl bg-gray-950 hover:bg-gray-800 border border-gray-800 text-white font-bold text-xs flex flex-col items-center justify-center space-y-1 transition min-h-[58px]">
                         <i class="ph-bold ph-qr-code text-lg text-cyan-400"></i>
                         <span>RECEIVE</span>
                     </button>
-                    <button onclick="openCommandModal('swap')" class="py-3 px-1 rounded-2xl bg-gray-950 hover:bg-gray-800 border border-gray-800 text-white font-bold text-xs flex flex-col items-center justify-center space-y-1 transition min-h-[58px]">
+                    <button data-action="openCommandModal" data-value="swap" class="py-3 px-1 rounded-2xl bg-gray-950 hover:bg-gray-800 border border-gray-800 text-white font-bold text-xs flex flex-col items-center justify-center space-y-1 transition min-h-[58px]">
                         <i class="ph-bold ph-swap text-lg text-emerald-400"></i>
-                        <span>SWAPS (SIM)</span>
+                        <span>XRPL SWAP</span>
                     </button>
-                    <button onclick="openCommandModal('streams')" class="py-3 px-1 rounded-2xl bg-gray-950 hover:bg-gray-800 border border-gray-800 text-white font-bold text-xs flex flex-col items-center justify-center space-y-1 transition min-h-[58px]">
+                    <button data-action="openCommandModal" data-value="streams" class="py-3 px-1 rounded-2xl bg-gray-950 hover:bg-gray-800 border border-gray-800 text-white font-bold text-xs flex flex-col items-center justify-center space-y-1 transition min-h-[58px]">
                         <i class="ph-bold ph-clock-countdown text-lg text-amber-400"></i>
                         <span>STREAMS (SIM)</span>
                     </button>
                 </div>
-                <p class="mt-3 rounded-xl border border-amber-500 border-opacity-30 bg-amber-500 bg-opacity-5 p-2.5 text-[10px] font-mono text-amber-200">
-                    This app does not submit XRPL transactions. Send, swaps, streams, DID entries, and funding are local-only simulations.
+                <p class="mt-3 rounded-xl border border-cyan-500 border-opacity-30 bg-cyan-500 bg-opacity-5 p-2.5 text-[10px] font-mono text-cyan-100">
+                    XRP/token payments and XRPL swaps are submitted only after your review and confirmation. Funding, streams, and DID entries remain local simulations.
                 </p>
             </div>
 
             <div class="bg-gray-900 bg-opacity-95 backdrop-blur-xl border border-gray-800 rounded-3xl p-5 shadow-xl">
                 <div class="flex items-center justify-between border-b border-gray-800 pb-3 mb-3">
                     <div class="flex space-x-2 overflow-x-auto">
-                        <button id="tabTokensBtn" onclick="switchDashTab('tokens')" class="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-cyan-500 bg-opacity-15 text-cyan-300 border border-cyan-500 border-opacity-30 transition min-h-[38px]">
-                            Tokens (SIM <span id="tokenCountBadge">0</span>)
+                        <button id="tabTokensBtn" data-action="switchDashTab" data-value="tokens" class="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-cyan-500 bg-opacity-15 text-cyan-300 border border-cyan-500 border-opacity-30 transition min-h-[38px]">
+                            Issued Tokens (<span id="tokenCountBadge">0</span>)
                         </button>
-                        <button id="tabSwapBtn" onclick="switchDashTab('swaps')" class="px-3.5 py-1.5 rounded-xl text-xs font-bold text-slate-400 hover:text-white transition min-h-[38px]">
+                        <button id="tabSwapBtn" data-action="switchDashTab" data-value="swaps" class="px-3.5 py-1.5 rounded-xl text-xs font-bold text-slate-400 hover:text-white transition min-h-[38px]">
                             Swaps (<span id="swapCountBadge">0</span>)
                         </button>
-                        <button id="tabDidBtn" onclick="switchDashTab('did')" class="px-3.5 py-1.5 rounded-xl text-xs font-bold text-slate-400 hover:text-white transition min-h-[38px]">
+                        <button id="tabDidBtn" data-action="switchDashTab" data-value="did" class="px-3.5 py-1.5 rounded-xl text-xs font-bold text-slate-400 hover:text-white transition min-h-[38px]">
                             DID Badges
                         </button>
                     </div>
 
-                    <button onclick="openCommandModal('didModal')" class="text-xs font-mono text-cyan-400 hover:underline flex items-center gap-1 shrink-0 min-h-[38px]">
+                    <button data-action="openCommandModal" data-value="didModal" class="text-xs font-mono text-cyan-400 hover:underline flex items-center gap-1 shrink-0 min-h-[38px]">
                         <i class="ph-bold ph-identification-card"></i> DID
                     </button>
                 </div>
@@ -463,100 +464,122 @@
             <div class="flex items-center justify-between border-b border-gray-800 pb-3">
                 <div>
                     <span id="sendWizardBadge" class="text-[10px] font-mono uppercase text-cyan-400 font-bold">SEND STEP 1 OF 3</span>
-                    <h3 class="text-lg font-extrabold text-white">Simulate XRP Payment</h3>
+                    <h3 class="text-lg font-extrabold text-white">Send XRP or Issued Token</h3>
                 </div>
-                <button onclick="closeAllModals()" class="p-2.5 rounded-xl bg-gray-950 text-slate-400 hover:text-white min-h-[40px] min-w-[40px] flex items-center justify-center">
+                <button data-action="closeAllModals" class="p-2.5 rounded-xl bg-gray-950 text-slate-400 hover:text-white min-h-[40px] min-w-[40px] flex items-center justify-center">
                     <i class="ph-bold ph-x text-lg"></i>
                 </button>
             </div>
 
-            <p class="text-[11px] font-mono text-amber-300">Local simulation only. No payment will be submitted to XRPL.</p>
+            <p id="sendNetworkNotice" class="text-[11px] font-mono text-amber-300">Network and validated account state are checked before signing.</p>
             <div id="sendStep1" class="space-y-4">
                 <div>
                     <label class="text-xs font-bold text-slate-300">1. Choose Asset</label>
                     <select id="sendAssetSelect" class="mt-1.5 w-full p-3.5 rounded-2xl bg-gray-950 border border-gray-800 text-sm font-mono text-white focus:border-cyan-400 focus:outline-none">
-                        <option value="XRP">XRP (simulated native asset)</option>
+                        <option value="XRP">XRP</option>
                     </select>
                 </div>
 
                 <div>
                     <div class="flex items-center justify-between">
-                        <label class="text-xs font-bold text-slate-300">2. Destination Address or Handle</label>
-                        <button onclick="openContactsPicker()" class="text-[11px] font-mono text-cyan-400 hover:underline min-h-[36px] flex items-center">Contacts</button>
+                        <label class="text-xs font-bold text-slate-300">2. Destination XRPL Address</label>
+                        <button data-action="openContactsPicker" class="text-[11px] font-mono text-cyan-400 hover:underline min-h-[36px] flex items-center">Contacts</button>
                     </div>
-                    <input type="text" id="sendDestInput" oninput="validateSendStep1()" placeholder="rPT... or alice.xrp" class="mt-1.5 w-full p-3.5 rounded-2xl bg-gray-950 border border-gray-800 font-mono text-sm text-white focus:border-cyan-400 focus:outline-none">
-                    <p id="sendDestStatus" class="text-[11px] font-mono text-slate-400 mt-1">Enter valid XRPL address or BNS handle.</p>
+                    <input type="text" id="sendDestInput" data-input-action="validateSendStep1" placeholder="rPT..." autocomplete="off" spellcheck="false" class="mt-1.5 w-full p-3.5 rounded-2xl bg-gray-950 border border-gray-800 font-mono text-sm text-white focus:border-cyan-400 focus:outline-none">
+                    <p id="sendDestStatus" class="text-[11px] font-mono text-slate-400 mt-1">Only classic XRPL addresses are supported.</p>
+                    <label for="sendDestinationTagInput" class="block text-xs font-bold text-slate-300 mt-3">Destination Tag (optional)</label>
+                    <input type="number" id="sendDestinationTagInput" min="0" max="4294967295" step="1" placeholder="Required by some exchanges" class="mt-1.5 w-full p-3 rounded-xl bg-gray-950 border border-gray-800 font-mono text-sm text-white focus:border-cyan-400 focus:outline-none">
                 </div>
 
-                <button id="sendNextBtn1" onclick="goToSendStep2()" disabled class="w-full py-4 rounded-2xl font-extrabold text-xs uppercase tracking-wider bg-gray-800 text-slate-500 cursor-not-allowed transition min-h-[52px]">
+                <button id="sendNextBtn1" data-action="goToSendStep2" disabled class="w-full py-4 rounded-2xl font-extrabold text-xs uppercase tracking-wider bg-gray-800 text-slate-500 cursor-not-allowed transition min-h-[52px]">
                     Next: Enter Amount →
                 </button>
             </div>
 
             <div id="sendStep2" class="hidden space-y-4">
-                <button onclick="backToSendStep1()" class="text-xs text-slate-400 hover:text-white flex items-center gap-1 min-h-[36px] items-center">
+                <button data-action="backToSendStep1" class="text-xs text-slate-400 hover:text-white flex items-center gap-1 min-h-[36px] items-center">
                     <i class="ph-bold ph-arrow-left"></i> Edit Recipient
                 </button>
 
                 <div class="p-4 rounded-2xl bg-gray-950 border border-gray-800 text-center space-y-2">
                     <span class="text-xs font-mono text-cyan-400">SENDING AMOUNT</span>
-                    <input type="number" step="any" id="sendAmountInput" oninput="validateSendStep2()" placeholder="0.00" class="w-full bg-transparent text-center font-mono text-3xl font-extrabold text-white focus:outline-none">
+                    <input type="text" inputmode="decimal" id="sendAmountInput" data-input-action="validateSendStep2" placeholder="0.00" autocomplete="off" class="w-full bg-transparent text-center font-mono text-3xl font-extrabold text-white focus:outline-none">
                 </div>
 
-                <button id="sendNextBtn2" onclick="goToSendStep3()" disabled class="w-full py-4 rounded-2xl font-extrabold text-xs uppercase tracking-wider bg-gray-800 text-slate-500 cursor-not-allowed transition min-h-[52px]">
-                    Review & Slide to Simulate →
+                <button id="sendNextBtn2" data-action="goToSendStep3" disabled class="w-full py-4 rounded-2xl font-extrabold text-xs uppercase tracking-wider bg-gray-800 text-slate-500 cursor-not-allowed transition min-h-[52px]">
+                    Prepare Payment Review →
                 </button>
             </div>
 
             <div id="sendStep3" class="hidden space-y-4">
-                <button onclick="goToSendStep2()" class="text-xs text-slate-400 hover:text-white flex items-center gap-1 min-h-[36px] items-center">
+                <button data-action="goToSendStep2" class="text-xs text-slate-400 hover:text-white flex items-center gap-1 min-h-[36px] items-center">
                     <i class="ph-bold ph-arrow-left"></i> Edit Amount
                 </button>
 
                 <div class="p-4 rounded-2xl bg-gray-950 border border-cyan-500 border-opacity-30 space-y-2.5 text-xs font-mono">
+                    <div class="flex justify-between"><span class="text-slate-400">NETWORK:</span><span id="summarySendNetwork" class="font-bold text-cyan-300">—</span></div>
+                    <div class="flex justify-between"><span class="text-slate-400">ASSET:</span><span id="summarySendAsset" class="font-bold text-white">—</span></div>
                     <div class="flex justify-between">
                         <span class="text-slate-400">AMOUNT:</span>
                         <span id="summarySendAmount" class="font-bold text-emerald-400 text-sm">0 XRP</span>
                     </div>
                     <div class="flex justify-between">
-                        <span class="text-slate-400">TO ADDRESS:</span>
+                        <span class="text-slate-400">TO:</span>
                         <span id="summarySendDest" class="text-white truncate max-w-[180px]">r...</span>
                     </div>
+                    <div class="flex justify-between"><span class="text-slate-400">DESTINATION TAG:</span><span id="summarySendTag" class="text-white">—</span></div>
+                    <div class="flex justify-between"><span class="text-slate-400">NETWORK FEE:</span><span id="summarySendFee" class="text-white">Loading…</span></div>
+                    <div class="flex justify-between"><span class="text-slate-400">LAST LEDGER:</span><span id="summarySendLastLedger" class="text-white">—</span></div>
                 </div>
-
-                <div class="relative bg-gray-950 border border-cyan-500 border-opacity-40 rounded-2xl p-1.5">
-                    <div class="absolute inset-0 flex items-center justify-center pointer-events-none px-2 text-center">
-                        <span id="slidePromptText" class="text-[11px] font-mono font-bold uppercase tracking-widest text-cyan-300 text-opacity-80">
-                            SLIDE RIGHT TO SIMULATE →
-                        </span>
-                    </div>
-                    <input type="range" min="0" max="100" value="0" id="slideToSignInput" oninput="handleSimulationSlide(this.value)" onchange="resetSlideIfIncomplete(this.value)" class="slide-sign relative z-10">
+                <p id="sendReviewStatus" class="text-[11px] font-mono text-slate-300">Review the network, address, asset, amount, and fee before signing.</p>
+                <label class="flex items-start gap-2 text-[11px] text-amber-200">
+                    <input id="sendConfirmCheckbox" type="checkbox" class="mt-0.5 accent-cyan-400">
+                    <span>I reviewed these details and authorize this transaction to be signed locally and submitted.</span>
+                </label>
+                <button id="sendConfirmButton" data-action="submitPreparedPayment" disabled class="w-full py-4 rounded-2xl font-extrabold text-xs uppercase tracking-wider bg-gray-800 text-slate-500 cursor-not-allowed transition min-h-[52px]">
+                    Sign & Submit Payment
+                </button>
+                <button data-action="backToSendStep2" class="w-full py-2 text-xs text-slate-400 hover:text-white">Edit payment details</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Cross-Chain Atomic Swap Modal -->
+    <!-- XRPL DEX / AMM Swap Modal -->
     <div id="modalSwap" class="fixed inset-0 z-50 hidden bg-slate-950 bg-opacity-85 backdrop-blur-md flex items-center justify-center p-4">
         <div class="w-full max-w-md bg-gray-900 border border-gray-800 rounded-3xl p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
             <div class="flex items-center justify-between border-b border-gray-800 pb-3">
                 <div>
-                    <span class="text-[10px] font-mono uppercase text-emerald-400 font-bold">CROSS-CHAIN HTLC SWAP</span>
-                    <h3 class="text-lg font-extrabold text-white">Cross-Chain Swap Simulation</h3>
+                    <span class="text-[10px] font-mono uppercase text-emerald-400 font-bold">XRPL DECENTRALIZED EXCHANGE</span>
+                    <h3 class="text-lg font-extrabold text-white">Swap on XRPL</h3>
                 </div>
-                <button onclick="closeAllModals()" class="p-2.5 rounded-xl bg-gray-950 text-slate-400 hover:text-white min-h-[40px] min-w-[40px] flex items-center justify-center">
+                <button data-action="closeAllModals" class="p-2.5 rounded-xl bg-gray-950 text-slate-400 hover:text-white min-h-[40px] min-w-[40px] flex items-center justify-center">
                     <i class="ph-bold ph-x text-lg"></i>
                 </button>
             </div>
             <div class="space-y-3 text-xs font-mono">
-                <p class="text-amber-300">Simulation only: this records a local example and does not create an HTLC or move assets.</p>
-                <select id="swapTargetChain" class="w-full p-3.5 rounded-xl bg-gray-950 border border-gray-800 text-white font-mono">
-                    <option value="BTC">Bitcoin (BTC Network)</option>
-                    <option value="ETH">Ethereum (EVM Mainnet)</option>
-                    <option value="SOL">Solana (SOL Network)</option>
-                </select>
-                <input type="number" id="swapAmountInput" placeholder="Amount to Swap (XRP)" class="w-full p-3.5 rounded-xl bg-gray-950 border border-gray-800 text-white font-mono">
-                <button onclick="executeAtomicSwap()" class="w-full py-4 rounded-xl bg-emerald-400 hover:bg-emerald-300 text-slate-950 font-bold uppercase min-h-[52px]">Record Simulated Swap</button>
+                <p id="swapNetworkNotice" class="text-amber-300">Quote is indicative. A fill-or-kill transaction enforces your minimum output.</p>
+                <label class="block text-slate-300">You sell</label>
+                <select id="swapFromAssetSelect" class="w-full p-3.5 rounded-xl bg-gray-950 border border-gray-800 text-white font-mono"></select>
+                <input type="text" inputmode="decimal" id="swapAmountInput" placeholder="Amount to sell" autocomplete="off" class="w-full p-3.5 rounded-xl bg-gray-950 border border-gray-800 text-white font-mono">
+                <label class="block text-slate-300">You receive</label>
+                <select id="swapToAssetSelect" class="w-full p-3.5 rounded-xl bg-gray-950 border border-gray-800 text-white font-mono"></select>
+                <label for="swapSlippageInput" class="block text-slate-300">Maximum slippage (%)</label>
+                <input type="number" id="swapSlippageInput" min="0.1" max="5" step="0.1" value="1" class="w-full p-3.5 rounded-xl bg-gray-950 border border-gray-800 text-white font-mono">
+                <button data-action="prepareSwapQuote" class="w-full py-3 rounded-xl bg-gray-800 hover:bg-gray-700 text-white font-bold uppercase min-h-[48px]">Get Live Quote</button>
+                <div id="swapQuotePanel" class="hidden p-4 rounded-xl bg-gray-950 border border-emerald-500 border-opacity-40 space-y-2">
+                    <div class="flex justify-between gap-2"><span class="text-slate-400">ESTIMATED OUTPUT</span><span id="swapEstimatedOutput" class="text-emerald-300"></span></div>
+                    <div class="flex justify-between gap-2"><span class="text-slate-400">MINIMUM OUTPUT</span><span id="swapMinimumOutput" class="text-white"></span></div>
+                    <div class="flex justify-between gap-2"><span class="text-slate-400">PRICE IMPACT</span><span id="swapPriceImpact" class="text-white"></span></div>
+                    <div class="flex justify-between gap-2"><span class="text-slate-400">NETWORK / FEE</span><span id="swapFeeSummary" class="text-white"></span></div>
+                    <p id="swapQuoteSource" class="text-[10px] text-slate-400"></p>
+                </div>
+                <label class="flex items-start gap-2 text-[11px] text-amber-200">
+                    <input id="swapConfirmCheckbox" type="checkbox" class="mt-0.5 accent-emerald-400">
+                    <span>I reviewed the quote and minimum output and authorize local signing and submission.</span>
+                </label>
+                <p id="swapStatus" class="text-[11px] text-slate-300">No transaction has been signed.</p>
+                <button id="swapConfirmButton" data-action="submitPreparedSwap" disabled class="w-full py-4 rounded-xl bg-gray-800 text-slate-500 font-bold uppercase min-h-[52px]">Sign & Submit FOK Swap</button>
             </div>
         </div>
     </div>
@@ -569,7 +592,7 @@
                     <span class="text-[10px] font-mono uppercase text-amber-400 font-bold">RECURRING PAYMENT STREAMS</span>
                     <h3 class="text-lg font-extrabold text-white">Payment Stream Simulation</h3>
                 </div>
-                <button onclick="closeAllModals()" class="p-2.5 rounded-xl bg-gray-950 text-slate-400 hover:text-white min-h-[40px] min-w-[40px] flex items-center justify-center">
+                <button data-action="closeAllModals" class="p-2.5 rounded-xl bg-gray-950 text-slate-400 hover:text-white min-h-[40px] min-w-[40px] flex items-center justify-center">
                     <i class="ph-bold ph-x text-lg"></i>
                 </button>
             </div>
@@ -577,7 +600,7 @@
                 <p class="text-amber-300">Simulation only: this saves a local example and does not authorize recurring payments.</p>
                 <input type="text" id="streamRecipientInput" placeholder="Recipient Address (r...)" class="w-full p-3.5 rounded-xl bg-gray-950 border border-gray-800 text-white font-mono">
                 <input type="number" id="streamMonthlyInput" placeholder="Monthly XRP Amount" class="w-full p-3.5 rounded-xl bg-gray-950 border border-gray-800 text-white font-mono">
-                <button onclick="createPaymentStream()" class="w-full py-4 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold uppercase min-h-[52px]">Save Simulated Stream</button>
+                <button data-action="createPaymentStream" class="w-full py-4 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold uppercase min-h-[52px]">Save Simulated Stream</button>
             </div>
         </div>
     </div>
@@ -590,14 +613,14 @@
                     <span class="text-[10px] font-mono uppercase text-cyan-400 font-bold">DECENTRALIZED IDENTITY (DID)</span>
                     <h3 class="text-lg font-extrabold text-white">DID Entry Simulation</h3>
                 </div>
-                <button onclick="closeAllModals()" class="p-2.5 rounded-xl bg-gray-950 text-slate-400 hover:text-white min-h-[40px] min-w-[40px] flex items-center justify-center">
+                <button data-action="closeAllModals" class="p-2.5 rounded-xl bg-gray-950 text-slate-400 hover:text-white min-h-[40px] min-w-[40px] flex items-center justify-center">
                     <i class="ph-bold ph-x text-lg"></i>
                 </button>
             </div>
             <div class="space-y-3 text-xs font-mono">
                 <p class="text-amber-300">Simulation only: this saves a local URI. It does not publish or verify an XRPL credential.</p>
                 <input type="text" id="didUriInput" placeholder="DID Document URI / Credential Hash" class="w-full p-3.5 rounded-xl bg-gray-950 border border-gray-800 text-white font-mono">
-                <button onclick="publishDidCredential()" class="w-full py-4 rounded-xl bg-cyan-400 hover:bg-cyan-300 text-slate-950 font-bold uppercase min-h-[52px]">Save Simulated DID Entry</button>
+                <button data-action="publishDidCredential" class="w-full py-4 rounded-xl bg-cyan-400 hover:bg-cyan-300 text-slate-950 font-bold uppercase min-h-[52px]">Save Simulated DID Entry</button>
             </div>
         </div>
     </div>
@@ -610,7 +633,7 @@
                     <span class="text-[10px] font-mono uppercase text-emerald-400 font-bold">DEPOSIT</span>
                     <h3 class="text-lg font-extrabold text-white">Receive XRP & Tokens</h3>
                 </div>
-                <button onclick="closeAllModals()" class="p-2.5 rounded-xl bg-gray-950 text-slate-400 hover:text-white min-h-[40px] min-w-[40px] flex items-center justify-center">
+                <button data-action="closeAllModals" class="p-2.5 rounded-xl bg-gray-950 text-slate-400 hover:text-white min-h-[40px] min-w-[40px] flex items-center justify-center">
                     <i class="ph-bold ph-x text-lg"></i>
                 </button>
             </div>
@@ -618,7 +641,7 @@
                 <div id="receiveQrContainer"></div>
             </div>
             <div class="p-3.5 rounded-2xl bg-gray-950 border border-gray-800 font-mono text-xs text-cyan-300 break-all selectable" id="receiveFullAddress">r...</div>
-            <button onclick="copyWalletAddress()" class="w-full py-4 rounded-2xl bg-cyan-400 hover:bg-cyan-300 text-slate-950 font-extrabold text-xs uppercase tracking-wider min-h-[52px]">Copy Address</button>
+            <button data-action="copyWalletAddress" class="w-full py-4 rounded-2xl bg-cyan-400 hover:bg-cyan-300 text-slate-950 font-extrabold text-xs uppercase tracking-wider min-h-[52px]">Copy Address</button>
         </div>
     </div>
 
@@ -630,7 +653,7 @@
                     <span class="text-[10px] font-mono uppercase text-cyan-400 font-bold">COMPLIANCE CREDENTIALS</span>
                     <h3 class="text-lg font-extrabold text-white">Permissioned Domain Access</h3>
                 </div>
-                <button onclick="closeAllModals()" class="p-2.5 rounded-xl bg-gray-950 text-slate-400 hover:text-white min-h-[40px] min-w-[40px] flex items-center justify-center">
+                <button data-action="closeAllModals" class="p-2.5 rounded-xl bg-gray-950 text-slate-400 hover:text-white min-h-[40px] min-w-[40px] flex items-center justify-center">
                     <i class="ph-bold ph-x text-lg"></i>
                 </button>
             </div>
@@ -639,7 +662,7 @@
                 <div class="p-3.5 rounded-xl bg-gray-950 border border-gray-800 space-y-2">
                     <div class="flex justify-between"><span class="text-slate-400">STATUS:</span><span id="credentialStatusText" class="text-amber-400 font-bold">UNVERIFIED</span></div>
                 </div>
-                <button onclick="requestIssuerCredential()" class="w-full py-4 rounded-xl bg-cyan-400 hover:bg-cyan-300 text-slate-950 font-bold uppercase min-h-[52px]">Request Institutional Attestation</button>
+                <button data-action="requestIssuerCredential" class="w-full py-4 rounded-xl bg-cyan-400 hover:bg-cyan-300 text-slate-950 font-bold uppercase min-h-[52px]">Request Institutional Attestation</button>
             </div>
         </div>
     </div>
@@ -652,15 +675,15 @@
                     <span class="text-[10px] font-mono uppercase text-cyan-400 font-bold">LOCAL ADDRESS BOOK</span>
                     <h3 class="text-base font-extrabold text-white">Local Address Labels</h3>
                 </div>
-                <button onclick="closeAllModals()" class="p-2.5 rounded-xl bg-gray-950 text-slate-400 hover:text-white min-h-[40px] min-w-[40px] flex items-center justify-center"><i class="ph-bold ph-x"></i></button>
+                <button data-action="closeAllModals" class="p-2.5 rounded-xl bg-gray-950 text-slate-400 hover:text-white min-h-[40px] min-w-[40px] flex items-center justify-center"><i class="ph-bold ph-x"></i></button>
             </div>
             <div class="space-y-3">
                 <p class="text-xs text-slate-300 font-mono">Save a local label for an existing XRPL address. This does not register or reserve an on-chain BNS name.</p>
                 <input type="text" id="contactNameInput" placeholder="BNS Name (e.g., alice.xrp)" class="w-full p-3.5 rounded-xl bg-gray-950 border border-gray-800 font-mono text-xs text-white">
                 <input type="text" id="contactAddressInput" placeholder="XRPL Address (r...)" class="w-full p-3.5 rounded-xl bg-gray-950 border border-gray-800 font-mono text-xs text-white">
                 <div class="grid grid-cols-2 gap-2">
-                    <button onclick="autoFillMyAddress()" class="py-3 rounded-xl bg-gray-950 border border-gray-800 text-cyan-400 font-bold text-xs">Use My Address</button>
-                    <button onclick="saveNewContact()" class="py-3 rounded-xl bg-cyan-400 text-slate-950 font-bold text-xs">Save Handle</button>
+                    <button data-action="autoFillMyAddress" class="py-3 rounded-xl bg-gray-950 border border-gray-800 text-cyan-400 font-bold text-xs">Use My Address</button>
+                    <button data-action="saveNewContact" class="py-3 rounded-xl bg-cyan-400 text-slate-950 font-bold text-xs">Save Handle</button>
                 </div>
                 <div id="contactsListContainer" class="space-y-2 max-h-48 overflow-y-auto pt-2 border-t border-gray-800"></div>
             </div>
@@ -672,21 +695,25 @@
         <div class="w-full max-w-sm bg-gray-900 border border-gray-800 rounded-3xl p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
             <div class="flex items-center justify-between border-b border-gray-800 pb-3">
                 <h3 class="text-base font-extrabold text-white">XRPL Network & Data Mode</h3>
-                <button onclick="closeAllModals()" class="p-2.5 rounded-xl bg-gray-950 text-slate-400 hover:text-white min-h-[40px] min-w-[40px] flex items-center justify-center"><i class="ph-bold ph-x"></i></button>
+                <button data-action="closeAllModals" class="p-2.5 rounded-xl bg-gray-950 text-slate-400 hover:text-white min-h-[40px] min-w-[40px] flex items-center justify-center"><i class="ph-bold ph-x"></i></button>
+            </div>
+            <div class="rounded-xl border border-gray-800 bg-gray-950 p-3 space-y-2">
+                <p id="networkStatusText" class="text-xs font-mono text-slate-300" aria-live="polite">Connection not checked.</p>
+                <button data-action="checkSelectedNetwork" class="w-full p-2.5 rounded-lg bg-gray-800 text-cyan-200 text-xs font-bold">Check selected network</button>
             </div>
             <div class="space-y-2.5">
-                <button onclick="switchNetwork('TESTNET')" class="w-full p-4 rounded-2xl bg-gray-950 border border-gray-800 flex items-center justify-between text-left min-h-[60px]">
-                    <div><div class="font-bold text-sm text-emerald-400">XRPL Testnet</div><div class="text-[11px] text-slate-400">Read validated test-ledger data</div></div>
+                <button data-action="switchNetwork" data-value="TESTNET" class="w-full p-4 rounded-2xl bg-gray-950 border border-gray-800 flex items-center justify-between text-left min-h-[60px]">
+                    <div><div class="font-bold text-sm text-emerald-400">XRPL Testnet</div><div class="text-[11px] text-slate-400">Test funds only</div></div>
                     <i class="ph-bold ph-check-circle text-emerald-400 text-lg" id="checkNetTESTNET"></i>
                 </button>
-                <button onclick="switchNetwork('MAINNET')" class="w-full p-4 rounded-2xl bg-gray-950 border border-gray-800 flex items-center justify-between text-left min-h-[60px]">
-                    <div><div class="font-bold text-sm text-cyan-400">XRPL Mainnet</div><div class="text-[11px] text-slate-400">Read validated production-ledger data</div></div>
+                <button data-action="switchNetwork" data-value="MAINNET" class="w-full p-4 rounded-2xl bg-gray-950 border border-gray-800 flex items-center justify-between text-left min-h-[60px]">
+                    <div><div class="font-bold text-sm text-cyan-400">XRPL Mainnet</div><div class="text-[11px] text-slate-400">Real funds and fees</div></div>
                     <i class="ph-bold ph-check-circle text-cyan-400 text-lg hidden" id="checkNetMAINNET"></i>
                 </button>
             </div>
             <div class="border-t border-gray-800 pt-4 space-y-2">
                 <p class="text-[11px] text-amber-300 font-mono">Local simulation is separate from XRPL. Simulated balances and actions exist only in this browser and are never submitted to a ledger.</p>
-                <button id="localSimulationBtn" onclick="enableLocalSimulation()" class="w-full p-3 rounded-xl bg-amber-500 bg-opacity-10 border border-amber-500 border-opacity-40 text-amber-200 font-bold text-xs min-h-[48px]">
+                <button id="localSimulationBtn" data-action="enableLocalSimulation" class="w-full p-3 rounded-xl bg-amber-500 bg-opacity-10 border border-amber-500 border-opacity-40 text-amber-200 font-bold text-xs min-h-[48px]">
                     Enable Local Simulation
                 </button>
             </div>
@@ -698,21 +725,21 @@
         <div class="w-full max-w-md bg-gray-900 border border-gray-800 rounded-3xl p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
             <div class="flex items-center justify-between border-b border-gray-800 pb-3">
                 <h3 class="text-lg font-extrabold text-white">Export Encrypted Vault Backup</h3>
-                <button onclick="closeAllModals()" class="p-2.5 rounded-xl bg-gray-950 text-slate-400 hover:text-white min-h-[40px] min-w-[40px] flex items-center justify-center"><i class="ph-bold ph-x"></i></button>
+                <button data-action="closeAllModals" class="p-2.5 rounded-xl bg-gray-950 text-slate-400 hover:text-white min-h-[40px] min-w-[40px] flex items-center justify-center"><i class="ph-bold ph-x"></i></button>
             </div>
             <div id="backupSeedBox" class="p-3.5 rounded-xl bg-gray-950 font-mono text-xs font-bold text-amber-400 text-center selectable">•••••••••••••••••••••••••••••</div>
             <div class="grid grid-cols-2 gap-2">
-                <button onclick="revealBackupSeedNow()" class="py-3.5 rounded-2xl bg-amber-400 text-slate-950 font-extrabold text-xs uppercase min-h-[48px]">Reveal Seed</button>
-                <button onclick="downloadAquaVaultFile()" class="py-3.5 rounded-2xl bg-cyan-400 text-slate-950 font-extrabold text-xs uppercase min-h-[48px]">Download .aqua</button>
+                <button data-action="revealBackupSeedNow" class="py-3.5 rounded-2xl bg-amber-400 text-slate-950 font-extrabold text-xs uppercase min-h-[48px]">Reveal Seed</button>
+                <button data-action="downloadAquaVaultFile" class="py-3.5 rounded-2xl bg-cyan-400 text-slate-950 font-extrabold text-xs uppercase min-h-[48px]">Download .aqua</button>
             </div>
-            <button onclick="wipeVaultConfirmation()" class="w-full py-3.5 rounded-2xl bg-red-500 bg-opacity-15 text-red-400 font-bold text-xs min-h-[48px]">Disconnect Wallet</button>
+            <button data-action="wipeVaultConfirmation" class="w-full py-3.5 rounded-2xl bg-red-500 bg-opacity-15 text-red-400 font-bold text-xs min-h-[48px]">Disconnect Wallet</button>
         </div>
     </div>
 
     <div id="toastContainer" class="fixed bottom-5 left-1/2 -translate-x-1/2 z-50 pointer-events-none flex flex-col items-center space-y-2 w-full max-w-sm px-4"></div>
 
     <footer class="w-full max-w-lg mx-auto px-4 py-3 text-center text-[11px] font-mono text-slate-500 flex items-center justify-between border-t border-gray-900">
-        <span>AQUA WALLET v3.4 MOBILE</span>
+        <span id="appVersionLabel">AQUA WALLET v3.4.1</span>
         <span>LOCAL VAULT STORAGE</span>
     </footer>
 
@@ -721,13 +748,18 @@
         const STORAGE_KEY_NET = 'AQUA_XRPL_NETWORK_V34';
         const STORAGE_KEY_CONTACTS = 'AQUA_XRPL_CONTACTS_V34';
         const STORAGE_KEY_SIM_LEDGER = 'AQUA_XRPL_LOCAL_LEDGER_V34';
+        const APP_VERSION = document.querySelector('meta[name="app-version"]').content;
+        const LEGACY_KDF_ITERATIONS = 100000;
+        const CURRENT_KDF_ITERATIONS = 600000;
+        const MAX_TRANSACTION_FEE_DROPS = 10000;
 
         const NETWORKS = {
-            TESTNET: { name: 'TESTNET', rpc: 'https://s.altnet.rippletest.net:51234/', nodeCount: 3 },
-            MAINNET: { name: 'MAINNET', rpc: 'https://xrplcluster.com/', nodeCount: 5 }
+            TESTNET: { name: 'TESTNET', rpc: 'https://s.altnet.rippletest.net:51234/', ws: 'wss://s.altnet.rippletest.net:51233/' },
+            MAINNET: { name: 'MAINNET', rpc: 'https://xrplcluster.com/', ws: 'wss://xrplcluster.com/' }
         };
 
-        let currentNetwork = localStorage.getItem(STORAGE_KEY_NET) || 'TESTNET';
+        const storedNetwork = localStorage.getItem(STORAGE_KEY_NET);
+        let currentNetwork = Object.prototype.hasOwnProperty.call(NETWORKS, storedNetwork) ? storedNetwork : 'TESTNET';
         let activeWallet = null;
         let isLocalSimulationMode = false;
         let connectionStatus = 'unverified';
@@ -744,6 +776,13 @@
         let activeStreams = [];
         let didCredentials = [];
         let seedVisible = false;
+        let networkProbeStatus = 'not_checked';
+        let networkProbeLedger = null;
+        let networkProbeError = '';
+        let accountTokenError = '';
+        let preparedPayment = null;
+        let preparedSwap = null;
+        let transactionInProgress = false;
 
         function escapeHtml(value) {
             return String(value).replace(/[&<>"']/g, character => ({
@@ -820,6 +859,125 @@
             return false;
         }
 
+        function updateNetworkStatusText() {
+            const status = document.getElementById('networkStatusText');
+            if (!status) return;
+            if (networkProbeStatus === 'checking') {
+                status.textContent = `Checking XRPL ${currentNetwork}…`;
+                status.className = 'text-xs font-mono text-amber-300';
+            } else if (networkProbeStatus === 'connected') {
+                status.textContent = `XRPL ${currentNetwork} endpoint responded; validated ledger #${networkProbeLedger}. This check does not verify an account balance.`;
+                status.className = 'text-xs font-mono text-emerald-300';
+            } else if (networkProbeStatus === 'offline') {
+                status.textContent = `XRPL ${currentNetwork} could not be reached: ${networkProbeError}`;
+                status.className = 'text-xs font-mono text-red-300';
+            } else {
+                status.textContent = `XRPL ${currentNetwork} connection not checked.`;
+                status.className = 'text-xs font-mono text-slate-300';
+            }
+        }
+
+        async function checkSelectedNetwork() {
+            const selectedNetwork = currentNetwork;
+            networkProbeStatus = 'checking';
+            networkProbeError = '';
+            updateNetworkStatusText();
+            try {
+                const response = await fetch(NETWORKS[selectedNetwork].rpc, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ method: 'server_info', params: [{}] }),
+                    referrerPolicy: 'no-referrer'
+                });
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                const body = await response.json();
+                const info = body?.result?.info;
+                const ledger = Number(info?.validated_ledger?.seq);
+                if (!Number.isSafeInteger(ledger) || ledger < 1) throw new Error('No validated ledger reported');
+                if (selectedNetwork !== currentNetwork) return;
+                networkProbeLedger = ledger;
+                networkProbeStatus = 'connected';
+                updateNetworkStatusText();
+                return true;
+            } catch (error) {
+                if (selectedNetwork !== currentNetwork) return false;
+                networkProbeStatus = 'offline';
+                networkProbeError = String(error.message || 'connection failed').slice(0, 100);
+                updateNetworkStatusText();
+                showToast(`Could not reach XRPL ${selectedNetwork}`, 'error');
+                return false;
+            }
+        }
+
+        function parseDecimalToScaled(value, scale = 15) {
+            const text = String(value).trim();
+            if (!/^(?:0|[1-9]\d*)(?:\.\d+)?$/.test(text)) throw new Error('Enter a positive decimal amount without signs or exponent notation');
+            const [whole, rawFraction = ''] = text.split('.');
+            const fraction = rawFraction.replace(/0+$/, '');
+            if (fraction.length > scale) throw new Error(`Amount supports at most ${scale} decimal places`);
+            const digits = BigInt(whole + fraction.padEnd(scale, '0'));
+            if (digits <= 0n) throw new Error('Amount must be greater than zero');
+            return digits;
+        }
+
+        function scaledToDecimal(value, scale = 15) {
+            const negative = value < 0n;
+            let digits = (negative ? -value : value).toString().padStart(scale + 1, '0');
+            const split = digits.length - scale;
+            const fraction = digits.slice(split).replace(/0+$/, '');
+            return `${negative ? '-' : ''}${digits.slice(0, split)}${fraction ? `.${fraction}` : ''}`;
+        }
+
+        function compareDecimalStrings(left, right, scale = 15) {
+            const a = parseDecimalToScaled(left, scale);
+            const b = parseDecimalToScaled(right, scale);
+            return a < b ? -1 : a > b ? 1 : 0;
+        }
+
+        function formatQuoteFloor(value, asset) {
+            const decimals = asset.code === 'XRP' ? 6 : 12;
+            if (!Number.isFinite(value) || value <= 0) throw new Error('No positive quote is available');
+            const scale = 10 ** decimals;
+            const units = BigInt(Math.floor(value * scale));
+            if (units <= 0n) throw new Error('Quoted output is below the supported precision');
+            return scaledToDecimal(units * (10n ** BigInt(15 - decimals)), 15);
+        }
+
+        function assetLedgerAmount(asset, value) {
+            if (asset.code === 'XRP') {
+                const scaled = parseDecimalToScaled(value, 6);
+                return scaled.toString();
+            }
+            return { currency: asset.currency, issuer: asset.issuer, value: scaledToDecimal(parseDecimalToScaled(value, 15), 15) };
+        }
+
+        function assetBookCurrency(asset) {
+            return asset.code === 'XRP' ? { currency: 'XRP' } : { currency: asset.currency, issuer: asset.issuer };
+        }
+
+        function ledgerAmountAsNumber(amount, asset) {
+            if (asset.code === 'XRP') {
+                const drops = typeof amount === 'object' ? amount.value : amount;
+                return Number(xrpl.dropsToXrp(String(drops)));
+            }
+            return Number(typeof amount === 'object' ? amount.value : amount);
+        }
+
+        function getXrplClient(network = currentNetwork) {
+            if (isLocalSimulationMode) throw new Error('Real XRPL transactions are disabled in Local Simulation mode');
+            return new xrpl.Client(NETWORKS[network].ws, { timeout: 20000 });
+        }
+
+        async function withXrplClient(callback, network = currentNetwork) {
+            const client = getXrplClient(network);
+            await client.connect();
+            try {
+                return await callback(client);
+            } finally {
+                try { await client.disconnect(); } catch (error) {}
+            }
+        }
+
         function copyTextToClipboard(text, label = 'Copied to clipboard') {
             const textArea = document.createElement('textarea');
             textArea.value = text;
@@ -832,10 +990,10 @@
             document.body.removeChild(textArea);
         }
 
-        async function deriveKeyFromPassphrase(passphrase, saltUint8) {
+        async function deriveKeyFromPassphrase(passphrase, saltUint8, iterations = CURRENT_KDF_ITERATIONS) {
             const enc = new TextEncoder();
             const keyMaterial = await window.crypto.subtle.importKey('raw', enc.encode(passphrase), { name: 'PBKDF2' }, false, ['deriveKey']);
-            return window.crypto.subtle.deriveKey({ name: 'PBKDF2', salt: saltUint8, iterations: 100000, hash: 'SHA-256' }, keyMaterial, { name: 'AES-GCM', length: 256 }, false, ['encrypt', 'decrypt']);
+            return window.crypto.subtle.deriveKey({ name: 'PBKDF2', salt: saltUint8, iterations, hash: 'SHA-256' }, keyMaterial, { name: 'AES-GCM', length: 256 }, false, ['encrypt', 'decrypt']);
         }
 
         function uint8ToBase64(bytes) {
@@ -857,35 +1015,83 @@
             const aesKey = await deriveKeyFromPassphrase(passphraseString, salt);
             const enc = new TextEncoder();
             const ciphertextBuf = await window.crypto.subtle.encrypt({ name: 'AES-GCM', iv: iv }, aesKey, enc.encode(seedString));
-            const payload = { address: publicAddress, salt: uint8ToBase64(salt), iv: uint8ToBase64(iv), ciphertext: uint8ToBase64(new Uint8Array(ciphertextBuf)) };
+            const payload = {
+                format: 'aqua-wallet-vault',
+                version: 2,
+                kdf: { algorithm: 'PBKDF2', hash: 'SHA-256', iterations: CURRENT_KDF_ITERATIONS },
+                cipher: { algorithm: 'AES-GCM', keyLength: 256 },
+                address: publicAddress,
+                salt: uint8ToBase64(salt),
+                iv: uint8ToBase64(iv),
+                ciphertext: uint8ToBase64(new Uint8Array(ciphertextBuf))
+            };
             localStorage.setItem(STORAGE_KEY_VAULT, JSON.stringify(payload));
+        }
+
+        function validateAquaBackupPayload(payload) {
+            if (!payload || typeof payload !== 'object' || Array.isArray(payload) ||
+                typeof payload.address !== 'string' || !xrpl.isValidClassicAddress(payload.address) ||
+                typeof payload.salt !== 'string' || typeof payload.iv !== 'string' ||
+                typeof payload.ciphertext !== 'string') {
+                throw new Error('Backup is missing required encrypted vault fields');
+            }
+            const salt = base64ToUint8(payload.salt);
+            const iv = base64ToUint8(payload.iv);
+            const ciphertext = base64ToUint8(payload.ciphertext);
+            if (salt.byteLength !== 16 || iv.byteLength !== 12 ||
+                ciphertext.byteLength < 16 || ciphertext.byteLength > 8192) {
+                throw new Error('Encrypted vault data has invalid lengths');
+            }
+            if (payload.version === undefined) {
+                return { payload, iterations: LEGACY_KDF_ITERATIONS, legacy: true };
+            }
+            if (payload.format !== 'aqua-wallet-vault' || payload.version !== 2 ||
+                payload.kdf?.algorithm !== 'PBKDF2' || payload.kdf?.hash !== 'SHA-256' ||
+                payload.kdf?.iterations !== CURRENT_KDF_ITERATIONS ||
+                payload.cipher?.algorithm !== 'AES-GCM' || payload.cipher?.keyLength !== 256) {
+                throw new Error('Unsupported or invalid encrypted vault version');
+            }
+            return { payload, iterations: CURRENT_KDF_ITERATIONS, legacy: false };
         }
 
         async function decryptSeedWithPassphrase(passphraseString) {
             const raw = localStorage.getItem(STORAGE_KEY_VAULT);
             if (!raw) throw new Error('No vault found');
-            const payload = JSON.parse(raw);
+            const { payload, iterations, legacy } = validateAquaBackupPayload(JSON.parse(raw));
             const salt = base64ToUint8(payload.salt);
             const iv = base64ToUint8(payload.iv);
             const ciphertext = base64ToUint8(payload.ciphertext);
-            const aesKey = await deriveKeyFromPassphrase(passphraseString, salt);
+            const aesKey = await deriveKeyFromPassphrase(passphraseString, salt, iterations);
             const decryptedBuf = await window.crypto.subtle.decrypt({ name: 'AES-GCM', iv: iv }, aesKey, ciphertext);
-            return new TextDecoder().decode(decryptedBuf);
+            return { seed: new TextDecoder().decode(decryptedBuf), address: payload.address, legacy };
         }
 
         function handleAquaFileUpload(event) {
             const file = event.target.files[0];
             if (!file) return;
+            if (file.size > 16384) {
+                showToast('Backup file is too large or invalid', 'error');
+                event.target.value = '';
+                return;
+            }
             const reader = new FileReader();
             reader.onload = async function(e) {
                 try {
                     const content = e.target.result;
-                    JSON.parse(content);
+                    const backup = validateAquaBackupPayload(JSON.parse(content));
+                    const currentRaw = localStorage.getItem(STORAGE_KEY_VAULT);
+                    if (currentRaw && currentRaw !== content &&
+                        !window.confirm('Replace the current encrypted wallet backup with this file?')) {
+                        event.target.value = '';
+                        return;
+                    }
                     localStorage.setItem(STORAGE_KEY_VAULT, content);
-                    showToast('Portable .aqua Vault Loaded Successfully!', 'success');
+                    showToast(`Encrypted vault v${backup.payload.version || 1} loaded; unlock it to verify the backup.`, 'success');
                     lockWalletNow();
                 } catch (err) {
-                    showToast('Invalid .aqua vault file format', 'error');
+                    showToast('Backup rejected: invalid or unsupported encrypted vault file', 'error');
+                } finally {
+                    event.target.value = '';
                 }
             };
             reader.readAsText(file);
@@ -924,7 +1130,6 @@
                 const contacts = getContacts();
                 const found = contacts.find(c => c.name.toLowerCase() === trimmed);
                 if (found) return found.address;
-                if (trimmed === 'alice.xrp') return 'rPT1Sjq2YGrBMTttX4GZHjKu9dyfzbpAYe';
             }
             return input;
         }
@@ -1081,12 +1286,17 @@
             const pass = document.getElementById('unlockPassphraseInput').value;
             if (!pass) return;
             try {
-                const decryptedSeed = await decryptSeedWithPassphrase(pass);
-                activeWallet = xrpl.Wallet.fromSeed(decryptedSeed);
+                const decrypted = await decryptSeedWithPassphrase(pass);
+                const wallet = xrpl.Wallet.fromSeed(decrypted.seed);
+                if (wallet.classicAddress !== decrypted.address) throw new Error('Vault address does not match its decrypted key');
+                activeWallet = wallet;
+                if (decrypted.legacy) {
+                    await encryptSeedWithPassphrase(decrypted.seed, pass, wallet.classicAddress);
+                }
                 document.getElementById('unlockPassphraseInput').value = '';
-                showToast('Vault Unlocked Securely', 'success');
+                showToast(decrypted.legacy ? 'Vault unlocked and upgraded to the current encryption format' : 'Vault unlocked', 'success');
                 launchDashboardView();
-            } catch (e) { showToast('Incorrect Passphrase', 'error'); }
+            } catch (e) { showToast('Vault could not be unlocked. Check the passphrase or backup integrity.', 'error'); }
         }
 
         function lockWalletNow() {
@@ -1205,6 +1415,24 @@
                 const drops = info.account_data.Balance;
                 accountXrpBalance = parseFloat(xrpl.dropsToXrp(drops));
                 accountSpendableXrp = Math.max(0, accountXrpBalance - 10);
+                accountTokenError = '';
+                try {
+                    const tokenInfo = await xrplRpcRequest('account_lines', { account: addr, ledger_index: 'validated', limit: 400 });
+                    accountTokens = (tokenInfo.lines || [])
+                        .filter(line => Number.isFinite(Number(line.balance)) && Number(line.balance) > 0)
+                        .map(line => ({
+                            code: formatCurrencyForDisplay(line.currency),
+                            currency: line.currency,
+                            issuer: line.account,
+                            balance: String(line.balance),
+                            frozen: Boolean(line.freeze || line.freeze_peer),
+                            noRipplePeer: Boolean(line.no_ripple_peer),
+                            authorized: Boolean(line.peer_authorized)
+                        }));
+                } catch (tokenError) {
+                    accountTokens = [];
+                    accountTokenError = 'Issued-token balances are unavailable; token actions are disabled until a validated trust-line response is received.';
+                }
 
                 document.getElementById('xrpTotalBalance').textContent = accountXrpBalance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 4 });
                 document.getElementById('xrpSpendableText').textContent = `Spendable: ${accountSpendableXrp.toFixed(2)} XRP`;
@@ -1213,6 +1441,13 @@
 
                 if (isLocalSimulationMode) {
                     const sim = getLocalSimState(addr);
+                    accountTokens = (sim.lines || []).map(line => ({
+                        code: formatCurrencyForDisplay(line.currency),
+                        currency: line.currency,
+                        issuer: line.issuer,
+                        balance: String(line.balance || '0'),
+                        frozen: false
+                    }));
                     atomicSwaps = sim.swaps || [];
                     activeStreams = sim.streams || [];
                     didCredentials = sim.dids || [];
@@ -1227,7 +1462,7 @@
                 const verifiedAccountMissing = err.data && err.data.error === 'actNotFound' &&
                     (isLocalSimulationMode || (err.data.result && err.data.result.validated === true && Number.isInteger(err.data.result.ledger_index)));
                 if (verifiedAccountMissing) {
-                    accountXrpBalance = 0; accountSpendableXrp = 0; atomicSwaps = []; activeStreams = []; didCredentials = [];
+                    accountXrpBalance = 0; accountSpendableXrp = 0; accountTokens = []; atomicSwaps = []; activeStreams = []; didCredentials = [];
                     document.getElementById('xrpTotalBalance').textContent = '0.00';
                     document.getElementById('xrpSpendableText').textContent = 'Spendable: 0.00 XRP';
                     document.getElementById('fiatValuationText').textContent = isLocalSimulationMode ? 'Simulation only' : 'Market value unavailable';
@@ -1239,6 +1474,7 @@
                     }
                     accountXrpBalance = 0;
                     accountSpendableXrp = 0;
+                    accountTokens = [];
                     atomicSwaps = [];
                     activeStreams = [];
                     didCredentials = [];
@@ -1252,7 +1488,9 @@
                 spinner.classList.remove('animate-spin');
                 renderSwapsList();
                 renderDidList();
+                renderTokenList();
                 populateSendAssetDropdown();
+                populateSwapAssetDropdowns();
             }
         }
 
@@ -1295,20 +1533,441 @@
             `).join('');
         }
 
-        async function executeAtomicSwap() {
-            if (!activeWallet || !requireLocalSimulation('Swap')) return;
-            const chain = document.getElementById('swapTargetChain').value;
-            const amount = parseFloat(document.getElementById('swapAmountInput').value);
-            if (isNaN(amount) || amount <= 0 || amount > accountSpendableXrp) { showToast('Invalid amount', 'error'); return; }
-            const addr = activeWallet.classicAddress;
-            const sim = getLocalSimState(addr);
-            sim.xrpDrops = String(parseInt(sim.xrpDrops, 10) - Math.floor(amount * 1000000));
-            if (!sim.swaps) sim.swaps = [];
-            sim.swaps.push({ chain, amount, timestamp: Date.now() });
-            saveLocalSimState(addr, sim);
-            showToast(`SIMULATED: ${amount} XRP swap recorded locally. No HTLC was submitted.`, 'info');
-            closeAllModals();
-            await refreshAccountTelemetry(false);
+        function renderTokenList() {
+            const container = document.getElementById('tabPanelTokens');
+            const badge = document.getElementById('tokenCountBadge');
+            badge.textContent = String(accountTokens.length);
+            if (accountTokenError) {
+                container.innerHTML = `<div class="text-center py-6 text-xs font-mono text-amber-300">${escapeHtml(accountTokenError)}</div>`;
+                return;
+            }
+            if (!accountTokens.length) {
+                container.innerHTML = '<div class="text-center py-6 text-xs font-mono text-slate-500">No validated issued-token balances found.</div>';
+                return;
+            }
+            container.innerHTML = accountTokens.map(token => `
+                <div class="p-3 rounded-xl bg-gray-950 border border-gray-800 flex items-center justify-between gap-3 font-mono text-xs">
+                    <div class="min-w-0"><div class="font-bold text-cyan-300">${escapeHtml(token.code)}</div><div class="text-[10px] text-slate-400 truncate">Issuer ${escapeHtml(token.issuer)}</div></div>
+                    <span class="text-white text-right">${escapeHtml(token.balance)}</span>
+                </div>
+            `).join('');
+        }
+
+        function signedDecimalToScaled(value, scale = 15) {
+            const text = String(value).trim();
+            if (!/^-?(?:0|[1-9]\d*)(?:\.\d+)?$/.test(text)) throw new Error('Invalid XRPL decimal amount');
+            const negative = text.startsWith('-');
+            const unsigned = negative ? text.slice(1) : text;
+            const [whole, rawFraction = ''] = unsigned.split('.');
+            const fraction = rawFraction.replace(/0+$/, '');
+            if (fraction.length > scale) throw new Error('XRPL amount precision is not supported');
+            const units = BigInt(whole + fraction.padEnd(scale, '0'));
+            return negative ? -units : units;
+        }
+
+        function requireValidatedResult(response, label) {
+            const result = response?.result || response;
+            if (!result || result.status === 'error' || result.error) {
+                throw new Error(`${label} request failed: ${result?.error_message || result?.error || 'unknown XRPL response'}`);
+            }
+            if (result.validated === false) throw new Error(`${label} response was not validated`);
+            return result;
+        }
+
+        function getTokenForAsset(asset) {
+            return accountTokens.find(token => token.currency === asset.currency && token.issuer === asset.issuer);
+        }
+
+        function validateAvailableBalance(asset, amount) {
+            if (asset.code === 'XRP') {
+                if (compareDecimalStrings(amount, String(accountSpendableXrp), 6) > 0) {
+                    throw new Error('XRP amount exceeds the displayed spendable balance and reserve');
+                }
+                return;
+            }
+            const token = getTokenForAsset(asset);
+            if (!token || token.frozen) throw new Error('This issued-token balance is unavailable or frozen');
+            if (compareDecimalStrings(amount, token.balance, 15) > 0) throw new Error(`Amount exceeds the available ${asset.code} balance`);
+        }
+
+        function updateSendConfirmButton() {
+            const button = document.getElementById('sendConfirmButton');
+            const enabled = Boolean(preparedPayment && document.getElementById('sendConfirmCheckbox').checked && !transactionInProgress);
+            button.disabled = !enabled;
+            button.className = enabled
+                ? 'w-full py-4 rounded-2xl font-extrabold text-xs uppercase tracking-wider bg-cyan-400 text-slate-950 cursor-pointer transition min-h-[52px]'
+                : 'w-full py-4 rounded-2xl font-extrabold text-xs uppercase tracking-wider bg-gray-800 text-slate-500 cursor-not-allowed transition min-h-[52px]';
+        }
+
+        async function getReceiverTrustline(client, destination, asset, amount) {
+            const response = await client.request({
+                command: 'account_lines',
+                account: destination,
+                peer: asset.issuer,
+                ledger_index: 'validated'
+            });
+            const result = requireValidatedResult(response, 'Receiver trust-line');
+            const line = (result.lines || []).find(item => item.account === asset.issuer && item.currency === asset.currency);
+            if (!line) throw new Error(`Receiver has no ${asset.code} trust line for issuer ${asset.issuer}`);
+            if (line.freeze || line.freeze_peer) throw new Error('Receiver trust line is frozen');
+
+            const issuerResponse = await client.request({
+                command: 'account_info',
+                account: asset.issuer,
+                ledger_index: 'validated'
+            });
+            const issuerResult = requireValidatedResult(issuerResponse, 'Token issuer');
+            const issuerFlags = Number(issuerResult.account_data?.Flags || 0);
+            const requireAuth = (issuerFlags & 0x00040000) !== 0;
+            if (requireAuth && !line.peer_authorized) throw new Error('Issuer requires authorization and has not authorized the receiver');
+
+            const senderLine = getTokenForAsset(asset);
+            if (senderLine?.noRipplePeer && line.no_ripple_peer) throw new Error('Issuer has disabled the trust-line path required for this payment');
+            const limit = signedDecimalToScaled(line.limit || '0');
+            const balance = signedDecimalToScaled(line.balance || '0');
+            const capacity = limit - balance;
+            const requested = parseDecimalToScaled(amount);
+            if (capacity < requested) throw new Error('Receiver trust-line limit does not have enough remaining capacity');
+        }
+
+        async function goToSendStep3() {
+            if (!activeWallet || isLocalSimulationMode) {
+                showToast('Unlock a wallet and select an XRPL network before preparing a real payment', 'error');
+                return;
+            }
+            const destination = resolveBnsAddress(document.getElementById('sendDestInput').value.trim());
+            if (!xrpl.isValidClassicAddress(destination)) throw new Error('Enter a valid classic XRPL destination');
+            if (destination === activeWallet.classicAddress) throw new Error('Self-payments are disabled');
+            const tagText = document.getElementById('sendDestinationTagInput').value.trim();
+            if (tagText && (!/^\d{1,10}$/.test(tagText) || Number(tagText) > 4294967295)) {
+                throw new Error('Destination Tag must be an integer from 0 to 4294967295');
+            }
+            const amount = document.getElementById('sendAmountInput').value.trim();
+            const asset = selectedWalletAsset('sendAssetSelect');
+            validateAvailableBalance(asset, amount);
+            const network = currentNetwork;
+            const sendStatus = document.getElementById('sendReviewStatus');
+            sendStatus.textContent = 'Checking validated account state and preparing the transaction…';
+            document.getElementById('sendStep2').classList.add('hidden');
+            document.getElementById('sendStep3').classList.remove('hidden');
+            document.getElementById('sendConfirmCheckbox').checked = false;
+            preparedPayment = null;
+            updateSendConfirmButton();
+            try {
+                preparedPayment = await withXrplClient(async client => {
+                    const senderInfo = requireValidatedResult(await client.request({
+                        command: 'account_info',
+                        account: activeWallet.classicAddress,
+                        ledger_index: 'validated'
+                    }), 'Sender account');
+                    if (asset.code !== 'XRP') await getReceiverTrustline(client, destination, asset, amount);
+                    const tx = {
+                        TransactionType: 'Payment',
+                        Account: activeWallet.classicAddress,
+                        Destination: destination,
+                        Amount: assetLedgerAmount(asset, amount)
+                    };
+                    if (tagText) tx.DestinationTag = Number(tagText);
+                    const filled = await client.autofill(tx);
+                    const feeDrops = String(filled.Fee || '');
+                    if (!/^\d+$/.test(feeDrops) || Number(feeDrops) > MAX_TRANSACTION_FEE_DROPS) {
+                        throw new Error('Network fee is invalid or exceeds the wallet safety limit');
+                    }
+                    const senderDrops = BigInt(senderInfo.account_data.Balance);
+                    const fee = BigInt(feeDrops);
+                    const reserve = 10000000n;
+                    const spend = asset.code === 'XRP' ? BigInt(filled.Amount) : 0n;
+                    if (senderDrops < reserve + fee + spend) throw new Error('Not enough XRP for the payment, network fee, and 10 XRP safety reserve');
+                    if (!Number.isInteger(filled.LastLedgerSequence)) throw new Error('XRPL did not set a transaction expiry ledger');
+                    return {
+                        tx: filled,
+                        network,
+                        sender: activeWallet.classicAddress,
+                        destination,
+                        asset,
+                        amount,
+                        feeDrops,
+                        lastLedgerSequence: filled.LastLedgerSequence
+                    };
+                }, network);
+
+                document.getElementById('summarySendNetwork').textContent = network;
+                document.getElementById('summarySendAsset').textContent = asset.code === 'XRP'
+                    ? 'XRP'
+                    : `${asset.code} • Issuer ${asset.issuer}`;
+                document.getElementById('summarySendAmount').textContent = `${amount} ${asset.code}`;
+                document.getElementById('summarySendDest').textContent = destination;
+                document.getElementById('summarySendTag').textContent = tagText || 'None';
+                document.getElementById('summarySendFee').textContent = `${xrpl.dropsToXrp(preparedPayment.feeDrops)} XRP`;
+                document.getElementById('summarySendLastLedger').textContent = String(preparedPayment.lastLedgerSequence);
+                sendStatus.textContent = 'Prepared, unsigned transaction. It will be signed locally only after confirmation.';
+                updateSendConfirmButton();
+            } catch (error) {
+                preparedPayment = null;
+                sendStatus.textContent = String(error.message || 'Unable to prepare transaction');
+                showToast(sendStatus.textContent, 'error');
+                updateSendConfirmButton();
+            }
+        }
+
+        async function submitPreparedPayment() {
+            if (!preparedPayment || !document.getElementById('sendConfirmCheckbox').checked || transactionInProgress) return;
+            if (!activeWallet || isLocalSimulationMode || preparedPayment.network !== currentNetwork ||
+                preparedPayment.sender !== activeWallet.classicAddress) {
+                showToast('Network or wallet changed. Rebuild the payment review before signing.', 'error');
+                preparedPayment = null;
+                updateSendConfirmButton();
+                return;
+            }
+            transactionInProgress = true;
+            updateSendConfirmButton();
+            const status = document.getElementById('sendReviewStatus');
+            let submitted = false;
+            let hash = '';
+            status.textContent = 'Checking transaction expiry; signing stays in this browser…';
+            try {
+                await withXrplClient(async client => {
+                    const ledgerResponse = await client.request({ command: 'ledger', ledger_index: 'validated' });
+                    const ledger = requireValidatedResult(ledgerResponse, 'Validated ledger');
+                    if (Number(ledger.ledger_index) >= preparedPayment.lastLedgerSequence) {
+                        throw new Error('Prepared transaction expired. Return and prepare a fresh review.');
+                    }
+                    const signed = activeWallet.sign(preparedPayment.tx);
+                    hash = signed.hash;
+                    status.textContent = `Signed locally. Submitting to ${preparedPayment.network} and waiting for validation…`;
+                    submitted = true;
+                    const response = await client.submitAndWait(signed.tx_blob);
+                    const result = response?.result || response;
+                    const txResult = result?.meta?.TransactionResult;
+                    if (result?.validated !== true || txResult !== 'tesSUCCESS') {
+                        throw new Error(`Transaction was not validated successfully (${txResult || 'validation pending'}).`);
+                    }
+                }, preparedPayment.network);
+                status.textContent = `Validated success on ${preparedPayment.network}. Transaction ${hash}`;
+                showToast(`Payment validated on ${preparedPayment.network}`, 'success');
+                preparedPayment = null;
+                await refreshAccountTelemetry(false);
+            } catch (error) {
+                status.textContent = submitted
+                    ? `Submission status unknown or failed. Check transaction ${hash || 'hash unavailable'} before retrying; do not submit again yet.`
+                    : String(error.message || 'Transaction was not submitted');
+                showToast(status.textContent, 'error');
+            } finally {
+                transactionInProgress = false;
+                updateSendConfirmButton();
+            }
+        }
+
+        function updateSwapConfirmButton() {
+            const button = document.getElementById('swapConfirmButton');
+            const enabled = Boolean(preparedSwap && document.getElementById('swapConfirmCheckbox').checked && !transactionInProgress);
+            button.disabled = !enabled;
+            button.className = enabled
+                ? 'w-full py-4 rounded-xl bg-emerald-400 text-slate-950 font-bold uppercase min-h-[52px]'
+                : 'w-full py-4 rounded-xl bg-gray-800 text-slate-500 font-bold uppercase min-h-[52px]';
+        }
+
+        function parseBookAmount(raw, asset) {
+            return ledgerAmountAsNumber(raw, asset);
+        }
+
+        function quoteFromOrderbook(offers, inputAmount, inputAsset, outputAsset) {
+            let remaining = inputAmount;
+            let totalOutput = 0;
+            let totalSpent = 0;
+            let bestOutputPerInput = 0;
+            for (const offer of offers || []) {
+                const gets = parseBookAmount(offer.taker_gets_funded || offer.TakerGets, outputAsset);
+                const pays = parseBookAmount(offer.taker_pays_funded || offer.TakerPays, inputAsset);
+                if (!(gets > 0) || !(pays > 0)) continue;
+                const rate = pays / gets;
+                const outputPerInput = 1 / rate;
+                if (!bestOutputPerInput) bestOutputPerInput = outputPerInput;
+                const takeOutput = Math.min(gets, remaining / rate);
+                const cost = takeOutput * rate;
+                totalOutput += takeOutput;
+                totalSpent += cost;
+                remaining -= cost;
+                if (remaining <= Math.max(inputAmount * 1e-12, 1e-12)) break;
+            }
+            if (remaining > Math.max(inputAmount * 1e-8, 1e-8) || totalOutput <= 0) return null;
+            const average = totalOutput / inputAmount;
+            const impact = bestOutputPerInput > 0 ? Math.max(0, (bestOutputPerInput - average) / bestOutputPerInput * 100) : 0;
+            return { output: totalOutput, impact, source: 'XRPL order book' };
+        }
+
+        function quoteFromAmm(amm, inputAmount, inputAsset, outputAsset) {
+            if (!amm) return null;
+            const raw1 = amm.amount;
+            const raw2 = amm.amount2;
+            const isXrpRaw = raw => typeof raw === 'string' || typeof raw === 'number';
+            const describe = (raw, requestedAsset) => {
+                if (requestedAsset.code === 'XRP') {
+                    const value = isXrpRaw(raw) ? Number(xrpl.dropsToXrp(String(raw))) : Number(raw.value);
+                    return value;
+                }
+                if (!raw || typeof raw !== 'object' || raw.currency !== requestedAsset.currency || raw.issuer !== requestedAsset.issuer) return null;
+                return Number(raw.value);
+            };
+            let reserveIn = describe(raw1, inputAsset);
+            let reserveOut = describe(raw2, outputAsset);
+            if (reserveIn === null || reserveOut === null) {
+                reserveIn = describe(raw2, inputAsset);
+                reserveOut = describe(raw1, outputAsset);
+            }
+            if (!(reserveIn > 0) || !(reserveOut > 0)) return null;
+            const feeFraction = Math.min(Number(amm.trading_fee || 0) / 100000, 0.01);
+            const effectiveInput = inputAmount * (1 - feeFraction);
+            const output = reserveOut * effectiveInput / (reserveIn + effectiveInput);
+            const spotOutputPerInput = reserveOut / reserveIn;
+            const impact = Math.max(0, (spotOutputPerInput - output / inputAmount) / spotOutputPerInput * 100);
+            return { output, impact, source: 'XRPL AMM pool' };
+        }
+
+        async function prepareSwapQuote() {
+            if (!activeWallet || isLocalSimulationMode || connectionStatus !== 'verified') {
+                showToast('Unlock a wallet and verify its validated XRPL balance before swapping', 'error');
+                return;
+            }
+            const inputAsset = selectedWalletAsset('swapFromAssetSelect');
+            const outputAsset = selectedWalletAsset('swapToAssetSelect');
+            if (inputAsset.code === outputAsset.code &&
+                inputAsset.issuer === outputAsset.issuer && inputAsset.currency === outputAsset.currency) {
+                showToast('Choose two different assets', 'error');
+                return;
+            }
+            const inputText = document.getElementById('swapAmountInput').value.trim();
+            validateAvailableBalance(inputAsset, inputText);
+            const slippage = Number(document.getElementById('swapSlippageInput').value);
+            if (!Number.isFinite(slippage) || slippage < 0.1 || slippage > 5) {
+                showToast('Slippage must be between 0.1% and 5%', 'error');
+                return;
+            }
+            const amount = Number(inputText);
+            if (!Number.isFinite(amount) || amount <= 0) throw new Error('Enter a valid swap amount');
+            const network = currentNetwork;
+            preparedSwap = null;
+            updateSwapConfirmButton();
+            document.getElementById('swapQuotePanel').classList.add('hidden');
+            document.getElementById('swapStatus').textContent = `Fetching validated ${network} order-book and AMM quotes…`;
+            document.getElementById('swapConfirmCheckbox').checked = false;
+            try {
+                preparedSwap = await withXrplClient(async client => {
+                    const info = requireValidatedResult(await client.request({
+                        command: 'account_info',
+                        account: activeWallet.classicAddress,
+                        ledger_index: 'validated'
+                    }), 'Wallet account');
+                    const requestBase = { ledger_index: 'validated' };
+                    const bookPromise = client.request({
+                        command: 'book_offers',
+                        taker_gets: assetBookCurrency(outputAsset),
+                        taker_pays: assetBookCurrency(inputAsset),
+                        limit: 50,
+                        ...requestBase
+                    }).catch(() => null);
+                    const ammPromise = client.request({
+                        command: 'amm_info',
+                        asset: assetBookCurrency(inputAsset),
+                        asset2: assetBookCurrency(outputAsset),
+                        ...requestBase
+                    }).catch(() => null);
+                    const [bookResponse, ammResponse] = await Promise.all([bookPromise, ammPromise]);
+                    const bookResult = bookResponse ? requireValidatedResult(bookResponse, 'Order-book quote') : null;
+                    const ammResult = ammResponse ? requireValidatedResult(ammResponse, 'AMM quote') : null;
+                    const bookQuote = quoteFromOrderbook(bookResult?.offers, amount, inputAsset, outputAsset);
+                    const ammQuote = quoteFromAmm(ammResult?.amm, amount, inputAsset, outputAsset);
+                    const routes = [bookQuote, ammQuote].filter(Boolean).sort((left, right) => right.output - left.output);
+                    if (!routes.length) throw new Error('No funded XRPL order-book or AMM liquidity was found for this pair');
+                    const quote = routes[0];
+                    const minimumOutput = formatQuoteFloor(quote.output * (1 - slippage / 100), outputAsset);
+                    if (inputAsset.code === 'XRP') {
+                        const balanceDrops = BigInt(info.account_data.Balance);
+                        const reserve = 10000000n;
+                        if (balanceDrops < reserve + BigInt(xrpl.xrpToDrops(inputText))) {
+                            throw new Error('Not enough XRP for the swap and 10 XRP safety reserve');
+                        }
+                    }
+                    const tx = {
+                        TransactionType: 'OfferCreate',
+                        Account: activeWallet.classicAddress,
+                        TakerGets: assetLedgerAmount(inputAsset, inputText),
+                        TakerPays: assetLedgerAmount(outputAsset, minimumOutput),
+                        Flags: 0x00040000 | 0x00080000
+                    };
+                    const filled = await client.autofill(tx);
+                    if (!/^\d+$/.test(String(filled.Fee || '')) || Number(filled.Fee) > MAX_TRANSACTION_FEE_DROPS) {
+                        throw new Error('Network fee is invalid or exceeds the wallet safety limit');
+                    }
+                    if (BigInt(info.account_data.Balance) < 10000000n + BigInt(filled.Fee) +
+                        (inputAsset.code === 'XRP' ? BigInt(filled.TakerGets) : 0n)) {
+                        throw new Error('Not enough XRP for the swap, network fee, and 10 XRP safety reserve');
+                    }
+                    return {
+                        tx: filled, network, sender: activeWallet.classicAddress, inputAsset, outputAsset,
+                        inputAmount: inputText, estimatedOutput: formatQuoteFloor(quote.output, outputAsset),
+                        minimumOutput, impact: quote.impact, source: quote.source,
+                        feeDrops: String(filled.Fee), lastLedgerSequence: filled.LastLedgerSequence
+                    };
+                }, network);
+                document.getElementById('swapEstimatedOutput').textContent = `${preparedSwap.estimatedOutput} ${outputAsset.code}`;
+                document.getElementById('swapMinimumOutput').textContent = `${preparedSwap.minimumOutput} ${outputAsset.code}`;
+                document.getElementById('swapPriceImpact').textContent = `${preparedSwap.impact.toFixed(2)}%`;
+                document.getElementById('swapFeeSummary').textContent = `${network} • ${xrpl.dropsToXrp(preparedSwap.feeDrops)} XRP`;
+                document.getElementById('swapQuoteSource').textContent = `${preparedSwap.source} estimate. Ledger matching may combine DEX and AMM liquidity; fill-or-kill enforces minimum output.`;
+                document.getElementById('swapQuotePanel').classList.remove('hidden');
+                document.getElementById('swapStatus').textContent = 'Unsigned quote ready. It expires with the ledger transaction window.';
+                updateSwapConfirmButton();
+            } catch (error) {
+                preparedSwap = null;
+                document.getElementById('swapStatus').textContent = String(error.message || 'Unable to quote this pair');
+                showToast(document.getElementById('swapStatus').textContent, 'error');
+                updateSwapConfirmButton();
+            }
+        }
+
+        async function submitPreparedSwap() {
+            if (!preparedSwap || !document.getElementById('swapConfirmCheckbox').checked || transactionInProgress) return;
+            if (!activeWallet || isLocalSimulationMode || preparedSwap.network !== currentNetwork ||
+                preparedSwap.sender !== activeWallet.classicAddress) {
+                showToast('Network or wallet changed. Request a fresh swap quote before signing.', 'error');
+                preparedSwap = null;
+                updateSwapConfirmButton();
+                return;
+            }
+            transactionInProgress = true;
+            updateSwapConfirmButton();
+            let submitted = false;
+            let hash = '';
+            const status = document.getElementById('swapStatus');
+            try {
+                await withXrplClient(async client => {
+                    const ledger = requireValidatedResult(await client.request({ command: 'ledger', ledger_index: 'validated' }), 'Validated ledger');
+                    if (Number(ledger.ledger_index) >= preparedSwap.lastLedgerSequence) throw new Error('Quote transaction expired. Request a fresh quote.');
+                    const signed = activeWallet.sign(preparedSwap.tx);
+                    hash = signed.hash;
+                    status.textContent = `Signed locally. Submitting to ${preparedSwap.network} and waiting for validation…`;
+                    submitted = true;
+                    const response = await client.submitAndWait(signed.tx_blob);
+                    const result = response?.result || response;
+                    const txResult = result?.meta?.TransactionResult;
+                    if (result?.validated !== true || txResult !== 'tesSUCCESS') {
+                        throw new Error(`Swap was not validated successfully (${txResult || 'validation pending'}).`);
+                    }
+                }, preparedSwap.network);
+                status.textContent = `Validated success on ${preparedSwap.network}. Transaction ${hash}`;
+                showToast(`XRPL swap validated on ${preparedSwap.network}`, 'success');
+                preparedSwap = null;
+                await refreshAccountTelemetry(false);
+            } catch (error) {
+                status.textContent = submitted
+                    ? `Submission status unknown or failed. Check transaction ${hash || 'hash unavailable'} before retrying; do not submit again yet.`
+                    : String(error.message || 'Swap was not submitted');
+                showToast(status.textContent, 'error');
+            } finally {
+                transactionInProgress = false;
+                updateSwapConfirmButton();
+            }
         }
 
         async function createPaymentStream() {
@@ -1346,18 +2005,66 @@
             });
         }
 
+        function walletAssets() {
+            return [
+                { code: 'XRP', currency: 'XRP', issuer: null, balance: String(accountSpendableXrp), frozen: false },
+                ...accountTokens
+            ];
+        }
+
+        function fillAssetSelect(select, assets, includeXrp = true) {
+            if (!select) return;
+            select.replaceChildren();
+            assets.forEach((asset, index) => {
+                if (!includeXrp && index === 0) return;
+                const option = document.createElement('option');
+                option.value = String(index);
+                option.textContent = asset.code === 'XRP'
+                    ? `XRP — Spendable ${accountSpendableXrp.toFixed(2)} XRP`
+                    : `${asset.code} — ${asset.balance} (issuer ${asset.issuer.slice(0, 7)}…${asset.issuer.slice(-4)})`;
+                select.appendChild(option);
+            });
+        }
+
         function populateSendAssetDropdown() {
             const select = document.getElementById('sendAssetSelect');
-            select.innerHTML = `<option value="XRP">XRP — Spendable: ${accountSpendableXrp.toFixed(2)} XRP</option>`;
+            fillAssetSelect(select, walletAssets());
+            if (accountTokenError) {
+                select.disabled = true;
+                select.title = accountTokenError;
+            } else {
+                select.disabled = false;
+                select.title = '';
+            }
+        }
+
+        function populateSwapAssetDropdowns() {
+            const assets = walletAssets();
+            fillAssetSelect(document.getElementById('swapFromAssetSelect'), assets);
+            fillAssetSelect(document.getElementById('swapToAssetSelect'), assets);
+            const to = document.getElementById('swapToAssetSelect');
+            if (to && to.options.length > 1) to.selectedIndex = 1;
+            if (accountTokenError) {
+                const from = document.getElementById('swapFromAssetSelect');
+                if (from) from.disabled = true;
+                if (to) to.disabled = true;
+            }
+        }
+
+        function selectedWalletAsset(selectId) {
+            const select = document.getElementById(selectId);
+            const index = Number(select?.value);
+            const assets = walletAssets();
+            if (!Number.isInteger(index) || index < 0 || index >= assets.length) throw new Error('Choose a valid wallet asset');
+            return assets[index];
         }
 
         function validateSendStep1() {
             const rawDest = document.getElementById('sendDestInput').value.trim();
-            const resolvedDest = resolveBnsAddress(rawDest);
             const btn = document.getElementById('sendNextBtn1');
             const status = document.getElementById('sendDestStatus');
-            if (xrpl.isValidClassicAddress(resolvedDest)) {
-                status.textContent = `Resolved: ${resolvedDest}`;
+            if (xrpl.isValidClassicAddress(rawDest)) {
+                status.textContent = `Valid destination: ${rawDest}`;
                 status.className = 'text-[11px] font-mono text-emerald-400 mt-1';
                 btn.disabled = false; btn.className = 'w-full py-4 rounded-2xl font-extrabold text-xs uppercase tracking-wider bg-cyan-400 text-slate-950 shadow-lg cursor-pointer min-h-[52px]';
             } else {
@@ -1371,55 +2078,40 @@
             document.getElementById('sendStep1').classList.remove('hidden');
             document.getElementById('sendStep2').classList.add('hidden');
             document.getElementById('sendStep3').classList.add('hidden');
+            preparedPayment = null;
+            updateSendConfirmButton();
         }
 
         function goToSendStep2() {
+            validateSendStep1();
+            if (document.getElementById('sendNextBtn1').disabled) return;
             document.getElementById('sendStep1').classList.add('hidden');
             document.getElementById('sendStep2').classList.remove('hidden');
+            validateSendStep2();
         }
 
         function validateSendStep2() {
-            const amt = parseFloat(document.getElementById('sendAmountInput').value);
+            const amount = document.getElementById('sendAmountInput').value.trim();
             const btn = document.getElementById('sendNextBtn2');
-            if (!isNaN(amt) && amt > 0) {
+            let valid = false;
+            try {
+                const asset = selectedWalletAsset('sendAssetSelect');
+                parseDecimalToScaled(amount, asset.code === 'XRP' ? 6 : 15);
+                valid = Boolean(activeWallet && !isLocalSimulationMode && connectionStatus === 'verified' && !accountTokenError);
+            } catch (error) {}
+            if (valid) {
                 btn.disabled = false; btn.className = 'w-full py-4 rounded-2xl font-extrabold text-xs uppercase tracking-wider bg-cyan-400 text-slate-950 shadow-lg cursor-pointer min-h-[52px]';
             } else {
                 btn.disabled = true; btn.className = 'w-full py-4 rounded-2xl font-extrabold text-xs uppercase tracking-wider bg-gray-800 text-slate-500 cursor-not-allowed min-h-[52px]';
             }
         }
 
-        function goToSendStep3() {
-            document.getElementById('summarySendAmount').textContent = document.getElementById('sendAmountInput').value + ' XRP';
-            document.getElementById('summarySendDest').textContent = resolveBnsAddress(document.getElementById('sendDestInput').value);
-            document.getElementById('sendStep2').classList.add('hidden');
-            document.getElementById('sendStep3').classList.remove('hidden');
-        }
-
-        function handleSimulationSlide(val) {
-            if (parseInt(val, 10) >= 96) {
-                document.getElementById('slideToSignInput').disabled = true;
-                recordSimulatedPayment();
-            }
-        }
-
-        function resetSlideIfIncomplete(val) {
-            if (parseInt(val, 10) < 96) document.getElementById('slideToSignInput').value = 0;
-        }
-
-        async function recordSimulatedPayment() {
-            if (!activeWallet || !requireLocalSimulation('Payment')) {
-                document.getElementById('slideToSignInput').disabled = false;
-                document.getElementById('slideToSignInput').value = 0;
-                return;
-            }
-            const amt = parseFloat(document.getElementById('sendAmountInput').value);
-            const addr = activeWallet.classicAddress;
-            const sim = getLocalSimState(addr);
-            sim.xrpDrops = String(Math.max(0, parseInt(sim.xrpDrops, 10) - Math.floor(amt * 1000000)));
-            saveLocalSimState(addr, sim);
-            showToast('SIMULATED: Payment recorded locally. No transaction was broadcast.', 'info');
-            closeAllModals();
-            await refreshAccountTelemetry(false);
+        function backToSendStep2() {
+            preparedPayment = null;
+            document.getElementById('sendStep3').classList.add('hidden');
+            document.getElementById('sendStep2').classList.remove('hidden');
+            document.getElementById('sendConfirmCheckbox').checked = false;
+            updateSendConfirmButton();
         }
 
         function getContacts() { try { return JSON.parse(localStorage.getItem(STORAGE_KEY_CONTACTS) || '[]'); } catch (e) { return []; } }
@@ -1499,21 +2191,32 @@
         function openBackupModal() { closeAllModals(); document.getElementById('modalBackup').classList.remove('hidden'); }
         function revealBackupSeedNow() { document.getElementById('backupSeedBox').textContent = activeWallet ? activeWallet.seed : 'No seed'; }
 
-        function toggleNetworkModal() { document.getElementById('modalNetwork').classList.toggle('hidden'); }
+        function toggleNetworkModal() {
+            const modal = document.getElementById('modalNetwork');
+            const opening = modal.classList.contains('hidden');
+            modal.classList.toggle('hidden');
+            updateNetworkStatusText();
+            if (opening) checkSelectedNetwork();
+        }
         function updateNetworkSelector() {
             Object.keys(NETWORKS).forEach(net => {
                 document.getElementById(`checkNet${net}`).classList.toggle('hidden', net !== currentNetwork);
             });
             updateConnectionIndicators();
+            updateNetworkStatusText();
         }
         async function switchNetwork(net) {
             if (!NETWORKS[net]) return;
             isLocalSimulationMode = false;
             connectionStatus = 'unverified';
             currentNetwork = net;
+            networkProbeStatus = 'not_checked';
+            networkProbeLedger = null;
+            networkProbeError = '';
             localStorage.setItem(STORAGE_KEY_NET, net);
             updateNetworkSelector();
-            closeAllModals(); showToast(`Selected XRPL ${net}; balances require a validated response`, 'info');
+            showToast(`Selected XRPL ${net}; checking the network and refreshing balances`, 'info');
+            await checkSelectedNetwork();
             if (activeWallet) await refreshAccountTelemetry(true);
         }
         async function enableLocalSimulation() {

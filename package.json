@@ -6,5 +6,8 @@
   },
   "devDependencies": {
     "playwright": "^1.64.1"
+  },
+  "dependencies": {
+    "xrpl": "^3.1.0"
   }
 }
