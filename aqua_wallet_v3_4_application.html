@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="app-version" content="3.4.1">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://unpkg.com https://cdnjs.cloudflare.com 'sha256-fP7qvlP4TWT33AcDcPiAhzHWrjyQVrOwu0QaGe/le50='; script-src-attr 'none'; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com https://unpkg.com; font-src 'self' data: https://fonts.gstatic.com https://cdn.jsdelivr.net https://unpkg.com; img-src 'self' data:; connect-src 'self' wss://s.altnet.rippletest.net:51233 wss://xrplcluster.com; object-src 'none'; base-uri 'none'; form-action 'none'">
     <title>AQUA WALLET // XRPL Universal Command Center</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" integrity="sha384-HtMZLkYo+pR5/u7zCzXxMJP6QoNnQJt1qkHM0EaOPvGDIzaVZbmYr/TlvUZ/sKAg" crossorigin="anonymous" referrerpolicy="no-referrer">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -180,7 +181,7 @@
                         </div>
                         <div class="min-w-0">
                             <div class="text-xs font-bold text-white truncate">Import Seed</div>
-                            <div class="text-[10px] text-slate-400 truncate">Secret / Phrase</div>
+                            <div class="text-[10px] text-slate-400 truncate">Phrase</div>
                         </div>
                     </button>
 
@@ -190,7 +191,7 @@
                         </div>
                         <div class="min-w-0">
                             <div class="text-xs font-bold text-white truncate">Load .aqua</div>
-                            <div class="text-[10px] text-cyan-400 truncate">Vault Backup File</div>
+                            <div class="text-[10px] text-cyan-400 truncate">Backup</div>
                         </div>
                         <input type="file" id="aquaFileInput" accept=".aqua,.json" data-change-action="handleAquaFileUpload" class="hidden">
                     </label>
@@ -396,7 +397,7 @@
                     <div class="flex items-center space-x-4 pt-1 text-xs font-mono text-slate-400">
                         <span id="xrpSpendableText">Spendable: unavailable</span>
                         <span>•</span>
-                        <span id="xrpReserveText" class="text-slate-500">Reserve: 10 XRP</span>
+                        <span id="xrpReserveText" class="text-slate-500">Safety hold: 10 XRP</span>
                     </div>
                 </div>
 
@@ -475,7 +476,7 @@
             <div id="sendStep1" class="space-y-4">
                 <div>
                     <label class="text-xs font-bold text-slate-300">1. Choose Asset</label>
-                    <select id="sendAssetSelect" class="mt-1.5 w-full p-3.5 rounded-2xl bg-gray-950 border border-gray-800 text-sm font-mono text-white focus:border-cyan-400 focus:outline-none">
+                    <select id="sendAssetSelect" data-change-action="validateSendStep2" class="mt-1.5 w-full p-3.5 rounded-2xl bg-gray-950 border border-gray-800 text-sm font-mono text-white focus:border-cyan-400 focus:outline-none">
                         <option value="XRP">XRP</option>
                     </select>
                 </div>
@@ -523,6 +524,7 @@
                         <span class="text-slate-400">AMOUNT:</span>
                         <span id="summarySendAmount" class="font-bold text-emerald-400 text-sm">0 XRP</span>
                     </div>
+                    <div class="flex justify-between"><span class="text-slate-400">MAX TOKEN DEBIT:</span><span id="summarySendMaxDebit" class="text-white">—</span></div>
                     <div class="flex justify-between">
                         <span class="text-slate-400">TO:</span>
                         <span id="summarySendDest" class="text-white truncate max-w-[180px]">r...</span>
@@ -533,7 +535,7 @@
                 </div>
                 <p id="sendReviewStatus" class="text-[11px] font-mono text-slate-300">Review the network, address, asset, amount, and fee before signing.</p>
                 <label class="flex items-start gap-2 text-[11px] text-amber-200">
-                    <input id="sendConfirmCheckbox" type="checkbox" class="mt-0.5 accent-cyan-400">
+                    <input id="sendConfirmCheckbox" data-change-action="updateSendConfirmButton" type="checkbox" class="mt-0.5 accent-cyan-400">
                     <span>I reviewed these details and authorize this transaction to be signed locally and submitted.</span>
                 </label>
                 <button id="sendConfirmButton" data-action="submitPreparedPayment" disabled class="w-full py-4 rounded-2xl font-extrabold text-xs uppercase tracking-wider bg-gray-800 text-slate-500 cursor-not-allowed transition min-h-[52px]">
@@ -560,12 +562,12 @@
             <div class="space-y-3 text-xs font-mono">
                 <p id="swapNetworkNotice" class="text-amber-300">Quote is indicative. A fill-or-kill transaction enforces your minimum output.</p>
                 <label class="block text-slate-300">You sell</label>
-                <select id="swapFromAssetSelect" class="w-full p-3.5 rounded-xl bg-gray-950 border border-gray-800 text-white font-mono"></select>
-                <input type="text" inputmode="decimal" id="swapAmountInput" placeholder="Amount to sell" autocomplete="off" class="w-full p-3.5 rounded-xl bg-gray-950 border border-gray-800 text-white font-mono">
+                <select id="swapFromAssetSelect" data-change-action="invalidateSwapQuote" class="w-full p-3.5 rounded-xl bg-gray-950 border border-gray-800 text-white font-mono"></select>
+                <input type="text" inputmode="decimal" id="swapAmountInput" data-input-action="invalidateSwapQuote" placeholder="Amount to sell" autocomplete="off" class="w-full p-3.5 rounded-xl bg-gray-950 border border-gray-800 text-white font-mono">
                 <label class="block text-slate-300">You receive</label>
-                <select id="swapToAssetSelect" class="w-full p-3.5 rounded-xl bg-gray-950 border border-gray-800 text-white font-mono"></select>
+                <select id="swapToAssetSelect" data-change-action="invalidateSwapQuote" class="w-full p-3.5 rounded-xl bg-gray-950 border border-gray-800 text-white font-mono"></select>
                 <label for="swapSlippageInput" class="block text-slate-300">Maximum slippage (%)</label>
-                <input type="number" id="swapSlippageInput" min="0.1" max="5" step="0.1" value="1" class="w-full p-3.5 rounded-xl bg-gray-950 border border-gray-800 text-white font-mono">
+                <input type="number" id="swapSlippageInput" data-input-action="invalidateSwapQuote" min="0.1" max="5" step="0.1" value="1" class="w-full p-3.5 rounded-xl bg-gray-950 border border-gray-800 text-white font-mono">
                 <button data-action="prepareSwapQuote" class="w-full py-3 rounded-xl bg-gray-800 hover:bg-gray-700 text-white font-bold uppercase min-h-[48px]">Get Live Quote</button>
                 <div id="swapQuotePanel" class="hidden p-4 rounded-xl bg-gray-950 border border-emerald-500 border-opacity-40 space-y-2">
                     <div class="flex justify-between gap-2"><span class="text-slate-400">ESTIMATED OUTPUT</span><span id="swapEstimatedOutput" class="text-emerald-300"></span></div>
@@ -575,7 +577,7 @@
                     <p id="swapQuoteSource" class="text-[10px] text-slate-400"></p>
                 </div>
                 <label class="flex items-start gap-2 text-[11px] text-amber-200">
-                    <input id="swapConfirmCheckbox" type="checkbox" class="mt-0.5 accent-emerald-400">
+                    <input id="swapConfirmCheckbox" data-change-action="updateSwapConfirmButton" type="checkbox" class="mt-0.5 accent-emerald-400">
                     <span>I reviewed the quote and minimum output and authorize local signing and submission.</span>
                 </label>
                 <p id="swapStatus" class="text-[11px] text-slate-300">No transaction has been signed.</p>
@@ -754,8 +756,8 @@
         const MAX_TRANSACTION_FEE_DROPS = 10000;
 
         const NETWORKS = {
-            TESTNET: { name: 'TESTNET', rpc: 'https://s.altnet.rippletest.net:51234/', ws: 'wss://s.altnet.rippletest.net:51233/' },
-            MAINNET: { name: 'MAINNET', rpc: 'https://xrplcluster.com/', ws: 'wss://xrplcluster.com/' }
+            TESTNET: { name: 'TESTNET', ws: 'wss://s.altnet.rippletest.net:51233/' },
+            MAINNET: { name: 'MAINNET', ws: 'wss://xrplcluster.com/' }
         };
 
         const storedNetwork = localStorage.getItem(STORAGE_KEY_NET);
@@ -768,6 +770,9 @@
         let currentImportMode = 'seed';
         let accountXrpBalance = 0;
         let accountSpendableXrp = 0;
+        let accountReserveXrp = 10;
+        let networkReserveBaseXrp = 10;
+        let networkReserveIncrementXrp = 0;
         let accountTokens = [];
         let accountMpts = [];
         let stakedPositions = [];
@@ -883,22 +888,22 @@
             networkProbeError = '';
             updateNetworkStatusText();
             try {
-                const response = await fetch(NETWORKS[selectedNetwork].rpc, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ method: 'server_info', params: [{}] }),
-                    referrerPolicy: 'no-referrer'
-                });
-                if (!response.ok) throw new Error(`HTTP ${response.status}`);
-                const body = await response.json();
-                const info = body?.result?.info;
-                const ledger = Number(info?.validated_ledger?.seq);
-                if (!Number.isSafeInteger(ledger) || ledger < 1) throw new Error('No validated ledger reported');
-                if (selectedNetwork !== currentNetwork) return;
-                networkProbeLedger = ledger;
-                networkProbeStatus = 'connected';
-                updateNetworkStatusText();
-                return true;
+                return await withXrplClient(async client => {
+                    const response = await client.request({ command: 'server_info' });
+                    const result = requireValidatedResult(response, 'XRPL server info');
+                    const info = result.info || result;
+                    const ledger = Number(info?.validated_ledger?.seq);
+                    if (!Number.isSafeInteger(ledger) || ledger < 1) throw new Error('No validated ledger reported');
+                    if (selectedNetwork !== currentNetwork) return false;
+                    networkProbeLedger = ledger;
+                    const reserveBase = Number(info.validated_ledger.reserve_base_xrp);
+                    const reserveIncrement = Number(info.validated_ledger.reserve_inc_xrp);
+                    if (Number.isFinite(reserveBase) && reserveBase > 0 && reserveBase < 1000) networkReserveBaseXrp = reserveBase;
+                    if (Number.isFinite(reserveIncrement) && reserveIncrement >= 0 && reserveIncrement < 1000) networkReserveIncrementXrp = reserveIncrement;
+                    networkProbeStatus = 'connected';
+                    updateNetworkStatusText();
+                    return true;
+                }, selectedNetwork);
             } catch (error) {
                 if (selectedNetwork !== currentNetwork) return false;
                 networkProbeStatus = 'offline';
@@ -915,6 +920,8 @@
             const [whole, rawFraction = ''] = text.split('.');
             const fraction = rawFraction.replace(/0+$/, '');
             if (fraction.length > scale) throw new Error(`Amount supports at most ${scale} decimal places`);
+            const significantDigits = (whole + fraction).replace(/^0+/, '').replace(/0+$/, '').length;
+            if (significantDigits > 16) throw new Error('Issued-asset amounts are limited to 16 significant digits');
             const digits = BigInt(whole + fraction.padEnd(scale, '0'));
             if (digits <= 0n) throw new Error('Amount must be greater than zero');
             return digits;
@@ -970,8 +977,8 @@
 
         async function withXrplClient(callback, network = currentNetwork) {
             const client = getXrplClient(network);
-            await client.connect();
             try {
+                await client.connect();
                 return await callback(client);
             } finally {
                 try { await client.disconnect(); } catch (error) {}
@@ -1003,9 +1010,14 @@
         }
 
         function base64ToUint8(base64) {
+            if (typeof base64 !== 'string' ||
+                !/^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/.test(base64)) {
+                throw new Error('Invalid base64 vault data');
+            }
             const binary = window.atob(base64);
             const bytes = new Uint8Array(binary.length);
             for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+            if (uint8ToBase64(bytes) !== base64) throw new Error('Non-canonical base64 vault data');
             return bytes;
         }
 
@@ -1032,7 +1044,9 @@
             if (!payload || typeof payload !== 'object' || Array.isArray(payload) ||
                 typeof payload.address !== 'string' || !xrpl.isValidClassicAddress(payload.address) ||
                 typeof payload.salt !== 'string' || typeof payload.iv !== 'string' ||
-                typeof payload.ciphertext !== 'string') {
+                typeof payload.ciphertext !== 'string' || payload.salt.length !== 24 ||
+                payload.iv.length !== 16 || payload.ciphertext.length < 24 ||
+                payload.ciphertext.length > 10924) {
                 throw new Error('Backup is missing required encrypted vault fields');
             }
             const salt = base64ToUint8(payload.salt);
@@ -1093,6 +1107,10 @@
                 } finally {
                     event.target.value = '';
                 }
+            };
+            reader.onerror = function() {
+                showToast('Backup file could not be read', 'error');
+                event.target.value = '';
             };
             reader.readAsText(file);
         }
@@ -1222,20 +1240,31 @@
 
         function validateImportedMnemonic() {
             if (currentImportMode !== 'mnemonic') return;
-            const phrase = document.getElementById('importMnemonicInput').value.trim();
+            const phrase = document.getElementById('importMnemonicInput').value.trim().replace(/\s+/g, ' ');
             const btn = document.getElementById('confirmImportBtn');
-            if (phrase.split(' ').length >= 12) {
-                try {
-                    let w = xrpl.Wallet.fromEntropy('1234567890abcdef');
-                    pendingSeedToEncrypt = w.seed;
-                    btn.disabled = false; btn.className = 'w-full py-4 rounded-2xl font-extrabold text-sm uppercase tracking-wider transition bg-gradient-to-r from-cyan-400 to-blue-500 text-slate-950 shadow-lg cursor-pointer min-h-[52px]';
-                } catch(e){}
+            try {
+                if (![12, 24].includes(phrase.split(' ').length)) throw new Error('Recovery phrase must contain 12 or 24 words');
+                const wallet = xrpl.Wallet.fromMnemonic(phrase);
+                pendingSeedToEncrypt = wallet.seed;
+                document.getElementById('importPreviewAddr').textContent = `Valid recovery phrase for ${wallet.classicAddress}`;
+                document.getElementById('importPreviewAddr').className = 'text-xs font-mono text-emerald-400';
+                btn.disabled = false;
+                btn.className = 'w-full py-4 rounded-2xl font-extrabold text-sm uppercase tracking-wider transition bg-gradient-to-r from-cyan-400 to-blue-500 text-slate-950 shadow-lg cursor-pointer min-h-[52px]';
+            } catch (error) {
+                pendingSeedToEncrypt = null;
+                document.getElementById('importPreviewAddr').textContent = 'Enter a valid 12 or 24-word recovery phrase.';
+                document.getElementById('importPreviewAddr').className = 'text-xs font-mono text-slate-400';
+                btn.disabled = true;
+                btn.className = 'w-full py-4 rounded-2xl font-extrabold text-sm uppercase tracking-wider transition bg-gray-800 text-slate-500 cursor-not-allowed min-h-[52px]';
             }
         }
 
         function confirmImportedCredentials() { if (pendingSeedToEncrypt) goToPasswordSetup(); }
         function resetOnboarding() {
             pendingSeedToEncrypt = null;
+            document.getElementById('genSecretSeed').textContent = '';
+            document.getElementById('importSeedInput').value = '';
+            document.getElementById('importMnemonicInput').value = '';
             document.getElementById('passphraseInput').value = '';
             document.getElementById('passphraseConfirmInput').value = '';
             document.getElementById('onboardStepChoice').classList.remove('hidden');
@@ -1273,13 +1302,17 @@
 
         async function finalizeVaultWithPassphrase() {
             const p1 = document.getElementById('passphraseInput').value;
-            if (p1.length < 16) return;
-            const walletObj = xrpl.Wallet.fromSeed(pendingSeedToEncrypt);
-            await encryptSeedWithPassphrase(pendingSeedToEncrypt, p1, walletObj.classicAddress);
-            activeWallet = walletObj;
-            pendingSeedToEncrypt = null;
-            showToast('Vault Sealed & Activated!', 'success');
-            launchDashboardView();
+            if (p1.length < 16 || !pendingSeedToEncrypt) return;
+            try {
+                const walletObj = xrpl.Wallet.fromSeed(pendingSeedToEncrypt);
+                await encryptSeedWithPassphrase(pendingSeedToEncrypt, p1, walletObj.classicAddress);
+                activeWallet = walletObj;
+                resetOnboarding();
+                showToast('Vault Sealed & Activated!', 'success');
+                launchDashboardView();
+            } catch (error) {
+                showToast('Could not securely create the local vault. Your wallet was not activated.', 'error');
+            }
         }
 
         async function attemptVaultUnlockWithPassphrase() {
@@ -1289,18 +1322,23 @@
                 const decrypted = await decryptSeedWithPassphrase(pass);
                 const wallet = xrpl.Wallet.fromSeed(decrypted.seed);
                 if (wallet.classicAddress !== decrypted.address) throw new Error('Vault address does not match its decrypted key');
-                activeWallet = wallet;
                 if (decrypted.legacy) {
                     await encryptSeedWithPassphrase(decrypted.seed, pass, wallet.classicAddress);
                 }
-                document.getElementById('unlockPassphraseInput').value = '';
+                activeWallet = wallet;
                 showToast(decrypted.legacy ? 'Vault unlocked and upgraded to the current encryption format' : 'Vault unlocked', 'success');
                 launchDashboardView();
-            } catch (e) { showToast('Vault could not be unlocked. Check the passphrase or backup integrity.', 'error'); }
+            } catch (e) {
+                activeWallet = null;
+                showToast('Vault could not be unlocked. Check the passphrase or backup integrity.', 'error');
+            } finally {
+                document.getElementById('unlockPassphraseInput').value = '';
+            }
         }
 
         function lockWalletNow() {
             activeWallet = null; closeAllModals();
+            document.getElementById('unlockPassphraseInput').value = '';
             document.getElementById('viewDashboard').classList.add('hidden');
             document.getElementById('viewOnboarding').classList.add('hidden');
             document.getElementById('viewUnlock').classList.remove('hidden');
@@ -1343,8 +1381,7 @@
             localStorage.setItem(STORAGE_KEY_SIM_LEDGER, JSON.stringify(all));
         }
 
-        async function xrplRpcRequest(method, paramsObj = {}) {
-            const netConfig = NETWORKS[currentNetwork];
+        async function xrplRpcRequest(method, paramsObj = {}, network = currentNetwork) {
             if (isLocalSimulationMode) {
                 simulatedLedgerIndex++;
                 const acct = paramsObj.account;
@@ -1356,18 +1393,17 @@
                 if (method === 'account_lines') return { lines: sim.lines };
                 throw new Error(`XRPL method ${method} is not available in local simulation`);
             }
-            connectionStatus = 'unverified';
-            updateConnectionIndicators();
+            if (network === currentNetwork && connectionStatus !== 'verified') {
+                connectionStatus = 'unverified';
+                updateConnectionIndicators();
+            }
             try {
-                    const response = await fetch(netConfig.rpc, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ method, params: [paramsObj] }), referrerPolicy: 'no-referrer' });
-                if (!response.ok) throw new Error(`XRPL endpoint returned HTTP ${response.status}`);
-                const data = await response.json();
-                if (!data || !data.result) throw new Error('XRPL endpoint returned no ledger result');
-                const result = data.result;
-                if (result.status !== 'success') {
+                const response = await withXrplClient(client => client.request({ command: method, ...paramsObj }), network);
+                const result = response?.result || response;
+                if (!result || result.status === 'error' || result.error) {
                     const err = new Error(result.error_message || result.error || 'XRPL request was not successful');
                     err.data = { error: result.error, result };
-                    if (result.error === 'actNotFound' && Number.isInteger(result.ledger_index) && result.validated === true) {
+                    if (network === currentNetwork && result.error === 'actNotFound' && Number.isInteger(result.ledger_index) && result.validated === true) {
                         connectionStatus = 'verified';
                         updateConnectionIndicators();
                     }
@@ -1376,12 +1412,21 @@
                 if (!Number.isInteger(result.ledger_index) || result.validated !== true) {
                     throw new Error('XRPL response is not from a verified validated ledger');
                 }
-                connectionStatus = 'verified';
-                updateConnectionIndicators();
+                if (network === currentNetwork) {
+                    connectionStatus = 'verified';
+                    updateConnectionIndicators();
+                }
                 return result;
             } catch (err) {
-                if (connectionStatus !== 'verified') connectionStatus = 'offline';
-                updateConnectionIndicators();
+                const validatedMissingAccount = err.data?.error === 'actNotFound' &&
+                    Number.isSafeInteger(Number(err.data?.ledger_index)) && err.data?.validated === true;
+                if (network === currentNetwork && validatedMissingAccount) {
+                    connectionStatus = 'verified';
+                    updateConnectionIndicators();
+                } else if (network === currentNetwork && connectionStatus !== 'verified') {
+                    connectionStatus = 'offline';
+                    updateConnectionIndicators();
+                }
                 throw err;
             }
         }
@@ -1410,14 +1455,20 @@
             spinner.classList.add('animate-spin');
             try {
                 const addr = activeWallet.classicAddress;
-                const info = await xrplRpcRequest('account_info', { account: addr, ledger_index: 'validated' });
+                const requestedNetwork = currentNetwork;
+                const info = await xrplRpcRequest('account_info', { account: addr, ledger_index: 'validated' }, requestedNetwork);
+                if (requestedNetwork !== currentNetwork || activeWallet?.classicAddress !== addr) return;
                 if (!info.account_data || !/^\d+$/.test(String(info.account_data.Balance))) throw new Error('XRPL returned an invalid account balance');
                 const drops = info.account_data.Balance;
                 accountXrpBalance = parseFloat(xrpl.dropsToXrp(drops));
-                accountSpendableXrp = Math.max(0, accountXrpBalance - 10);
+                const ownerCountValue = Number(info.account_data.OwnerCount || 0);
+                const ownerCount = Number.isSafeInteger(ownerCountValue) && ownerCountValue >= 0 ? ownerCountValue : 0;
+                accountReserveXrp = Math.max(10, networkReserveBaseXrp + ownerCount * networkReserveIncrementXrp);
+                accountSpendableXrp = Math.max(0, accountXrpBalance - accountReserveXrp);
                 accountTokenError = '';
                 try {
-                    const tokenInfo = await xrplRpcRequest('account_lines', { account: addr, ledger_index: 'validated', limit: 400 });
+                    const tokenInfo = await xrplRpcRequest('account_lines', { account: addr, ledger_index: 'validated', limit: 400 }, requestedNetwork);
+                    if (requestedNetwork !== currentNetwork || activeWallet?.classicAddress !== addr) return;
                     accountTokens = (tokenInfo.lines || [])
                         .filter(line => Number.isFinite(Number(line.balance)) && Number(line.balance) > 0)
                         .map(line => ({
@@ -1436,6 +1487,7 @@
 
                 document.getElementById('xrpTotalBalance').textContent = accountXrpBalance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 4 });
                 document.getElementById('xrpSpendableText').textContent = `Spendable: ${accountSpendableXrp.toFixed(2)} XRP`;
+                document.getElementById('xrpReserveText').textContent = `Safety hold: ${accountReserveXrp.toFixed(2)} XRP`;
                 document.getElementById('faucetActionBox').classList.add('hidden');
                 document.getElementById('fiatValuationText').textContent = isLocalSimulationMode ? 'Simulation only' : 'Market value unavailable';
 
@@ -1565,12 +1617,13 @@
             return negative ? -units : units;
         }
 
-        function requireValidatedResult(response, label) {
+        function requireValidatedResult(response, label, requireValidationFlag = false) {
             const result = response?.result || response;
             if (!result || result.status === 'error' || result.error) {
                 throw new Error(`${label} request failed: ${result?.error_message || result?.error || 'unknown XRPL response'}`);
             }
             if (result.validated === false) throw new Error(`${label} response was not validated`);
+            if (requireValidationFlag && result.validated !== true) throw new Error(`${label} response did not confirm a validated ledger`);
             return result;
         }
 
@@ -1600,34 +1653,40 @@
         }
 
         async function getReceiverTrustline(client, destination, asset, amount) {
-            const response = await client.request({
-                command: 'account_lines',
-                account: destination,
-                peer: asset.issuer,
-                ledger_index: 'validated'
-            });
-            const result = requireValidatedResult(response, 'Receiver trust-line');
-            const line = (result.lines || []).find(item => item.account === asset.issuer && item.currency === asset.currency);
-            if (!line) throw new Error(`Receiver has no ${asset.code} trust line for issuer ${asset.issuer}`);
-            if (line.freeze || line.freeze_peer) throw new Error('Receiver trust line is frozen');
-
             const issuerResponse = await client.request({
                 command: 'account_info',
                 account: asset.issuer,
                 ledger_index: 'validated'
             });
-            const issuerResult = requireValidatedResult(issuerResponse, 'Token issuer');
+            const issuerResult = requireValidatedResult(issuerResponse, 'Token issuer', true);
             const issuerFlags = Number(issuerResult.account_data?.Flags || 0);
             const requireAuth = (issuerFlags & 0x00040000) !== 0;
-            if (requireAuth && !line.peer_authorized) throw new Error('Issuer requires authorization and has not authorized the receiver');
+            if (destination !== asset.issuer) {
+                const response = await client.request({
+                    command: 'account_lines',
+                    account: destination,
+                    peer: asset.issuer,
+                    ledger_index: 'validated'
+                });
+                const result = requireValidatedResult(response, 'Receiver trust-line', true);
+                const line = (result.lines || []).find(item => item.account === asset.issuer && item.currency === asset.currency);
+                if (!line) throw new Error(`Receiver has no ${asset.code} trust line for issuer ${asset.issuer}`);
+                if (line.freeze || line.freeze_peer) throw new Error('Receiver trust line is frozen');
+                if (requireAuth && !line.peer_authorized) throw new Error('Issuer requires authorization and has not authorized the receiver');
 
-            const senderLine = getTokenForAsset(asset);
-            if (senderLine?.noRipplePeer && line.no_ripple_peer) throw new Error('Issuer has disabled the trust-line path required for this payment');
-            const limit = signedDecimalToScaled(line.limit || '0');
-            const balance = signedDecimalToScaled(line.balance || '0');
-            const capacity = limit - balance;
-            const requested = parseDecimalToScaled(amount);
-            if (capacity < requested) throw new Error('Receiver trust-line limit does not have enough remaining capacity');
+                const senderLine = getTokenForAsset(asset);
+                if (senderLine?.noRipplePeer && line.no_ripple_peer) throw new Error('Issuer has disabled the trust-line path required for this payment');
+                const limit = signedDecimalToScaled(line.limit || '0');
+                const balance = signedDecimalToScaled(line.balance || '0');
+                const capacity = limit - balance;
+                const requested = parseDecimalToScaled(amount);
+                if (capacity < requested) throw new Error('Receiver trust-line limit does not have enough remaining capacity');
+            }
+            const transferRate = Number(issuerResult.account_data?.TransferRate || 1000000000);
+            if (!Number.isSafeInteger(transferRate) || transferRate < 1000000000) throw new Error('Issuer returned an invalid transfer rate');
+            const amountUnits = parseDecimalToScaled(amount);
+            const maxDebitUnits = (amountUnits * BigInt(transferRate) + 999999999n) / 1000000000n;
+            return scaledToDecimal(maxDebitUnits);
         }
 
         async function goToSendStep3() {
@@ -1647,6 +1706,16 @@
             validateAvailableBalance(asset, amount);
             const network = currentNetwork;
             const sendStatus = document.getElementById('sendReviewStatus');
+            document.getElementById('summarySendNetwork').textContent = network;
+            document.getElementById('summarySendAsset').textContent = asset.code === 'XRP'
+                ? 'XRP'
+                : `${asset.code} • Issuer ${asset.issuer}`;
+            document.getElementById('summarySendAmount').textContent = `${amount} ${asset.code}`;
+            document.getElementById('summarySendMaxDebit').textContent = asset.code === 'XRP' ? 'Same as amount' : 'Checking…';
+            document.getElementById('summarySendDest').textContent = destination;
+            document.getElementById('summarySendTag').textContent = tagText || 'None';
+            document.getElementById('summarySendFee').textContent = 'Loading…';
+            document.getElementById('summarySendLastLedger').textContent = 'Loading…';
             sendStatus.textContent = 'Checking validated account state and preparing the transaction…';
             document.getElementById('sendStep2').classList.add('hidden');
             document.getElementById('sendStep3').classList.remove('hidden');
@@ -1659,14 +1728,45 @@
                         command: 'account_info',
                         account: activeWallet.classicAddress,
                         ledger_index: 'validated'
-                    }), 'Sender account');
-                    if (asset.code !== 'XRP') await getReceiverTrustline(client, destination, asset, amount);
+                    }), 'Sender account', true);
+                    if (asset.code === 'XRP') {
+                        try {
+                            requireValidatedResult(await client.request({
+                                command: 'account_info',
+                                account: destination,
+                                ledger_index: 'validated'
+                            }), 'Destination account', true);
+                        } catch (error) {
+                            if (error.data?.error !== 'actNotFound' || error.data?.validated !== true) throw error;
+                            const reserveResponse = await client.request({ command: 'server_info' });
+                            const reserveResult = requireValidatedResult(reserveResponse, 'XRPL reserve information');
+                            const serverInfo = reserveResult.info || reserveResult;
+                            const firstPaymentMinimum = Number(serverInfo.validated_ledger?.reserve_base_xrp);
+                            if (!Number.isFinite(firstPaymentMinimum) || firstPaymentMinimum <= 0) {
+                                throw new Error('Could not verify the minimum XRP amount for activating this destination');
+                            }
+                            if (compareDecimalStrings(amount, String(firstPaymentMinimum), 6) < 0) {
+                                throw new Error(`Destination account is not active; its first XRP payment must be at least ${firstPaymentMinimum} XRP`);
+                            }
+                        }
+                    }
+                    let maxTokenDebit = amount;
+                    if (asset.code !== 'XRP') {
+                        maxTokenDebit = await getReceiverTrustline(client, destination, asset, amount);
+                        const token = getTokenForAsset(asset);
+                        if (!token || compareDecimalStrings(maxTokenDebit, token.balance) > 0) {
+                            throw new Error(`Balance is too low to cover ${asset.code} plus the issuer transfer fee`);
+                        }
+                    }
                     const tx = {
                         TransactionType: 'Payment',
                         Account: activeWallet.classicAddress,
                         Destination: destination,
                         Amount: assetLedgerAmount(asset, amount)
                     };
+                    if (asset.code !== 'XRP' && compareDecimalStrings(maxTokenDebit, amount) > 0) {
+                        tx.SendMax = assetLedgerAmount(asset, maxTokenDebit);
+                    }
                     if (tagText) tx.DestinationTag = Number(tagText);
                     const filled = await client.autofill(tx);
                     const feeDrops = String(filled.Fee || '');
@@ -1675,9 +1775,9 @@
                     }
                     const senderDrops = BigInt(senderInfo.account_data.Balance);
                     const fee = BigInt(feeDrops);
-                    const reserve = 10000000n;
+                    const reserve = BigInt(xrpl.xrpToDrops(accountReserveXrp.toFixed(6)));
                     const spend = asset.code === 'XRP' ? BigInt(filled.Amount) : 0n;
-                    if (senderDrops < reserve + fee + spend) throw new Error('Not enough XRP for the payment, network fee, and 10 XRP safety reserve');
+                    if (senderDrops < reserve + fee + spend) throw new Error(`Not enough XRP for the payment, network fee, and ${accountReserveXrp.toFixed(2)} XRP safety hold`);
                     if (!Number.isInteger(filled.LastLedgerSequence)) throw new Error('XRPL did not set a transaction expiry ledger');
                     return {
                         tx: filled,
@@ -1686,6 +1786,7 @@
                         destination,
                         asset,
                         amount,
+                        maxTokenDebit,
                         feeDrops,
                         lastLedgerSequence: filled.LastLedgerSequence
                     };
@@ -1696,6 +1797,9 @@
                     ? 'XRP'
                     : `${asset.code} • Issuer ${asset.issuer}`;
                 document.getElementById('summarySendAmount').textContent = `${amount} ${asset.code}`;
+                document.getElementById('summarySendMaxDebit').textContent = asset.code === 'XRP'
+                    ? 'Same as amount'
+                    : `${preparedPayment.maxTokenDebit} ${asset.code}`;
                 document.getElementById('summarySendDest').textContent = destination;
                 document.getElementById('summarySendTag').textContent = tagText || 'None';
                 document.getElementById('summarySendFee').textContent = `${xrpl.dropsToXrp(preparedPayment.feeDrops)} XRP`;
@@ -1719,6 +1823,7 @@
                 updateSendConfirmButton();
                 return;
             }
+            const transaction = preparedPayment;
             transactionInProgress = true;
             updateSendConfirmButton();
             const status = document.getElementById('sendReviewStatus');
@@ -1729,27 +1834,38 @@
                 await withXrplClient(async client => {
                     const ledgerResponse = await client.request({ command: 'ledger', ledger_index: 'validated' });
                     const ledger = requireValidatedResult(ledgerResponse, 'Validated ledger');
-                    if (Number(ledger.ledger_index) >= preparedPayment.lastLedgerSequence) {
+                    if (preparedPayment !== transaction || currentNetwork !== transaction.network) {
+                        throw new Error('Payment review was canceled or the selected network changed');
+                    }
+                    if (Number(ledger.ledger_index) >= transaction.lastLedgerSequence) {
                         throw new Error('Prepared transaction expired. Return and prepare a fresh review.');
                     }
-                    const signed = activeWallet.sign(preparedPayment.tx);
+                    const signed = activeWallet.sign(transaction.tx);
                     hash = signed.hash;
-                    status.textContent = `Signed locally. Submitting to ${preparedPayment.network} and waiting for validation…`;
+                    preparedPayment = null;
+                    status.textContent = `Signed locally. Submitting to ${transaction.network} and waiting for validation…`;
                     submitted = true;
                     const response = await client.submitAndWait(signed.tx_blob);
                     const result = response?.result || response;
                     const txResult = result?.meta?.TransactionResult;
-                    if (result?.validated !== true || txResult !== 'tesSUCCESS') {
-                        throw new Error(`Transaction was not validated successfully (${txResult || 'validation pending'}).`);
+                    if (result?.validated === true && txResult !== 'tesSUCCESS') {
+                        const failure = new Error(`Transaction failed on the validated ledger (${txResult || 'unknown result'}).`);
+                        failure.transactionOutcome = 'validated_failed';
+                        throw failure;
                     }
-                }, preparedPayment.network);
-                status.textContent = `Validated success on ${preparedPayment.network}. Transaction ${hash}`;
-                showToast(`Payment validated on ${preparedPayment.network}`, 'success');
+                    if (result?.validated !== true) throw new Error('Transaction submission returned without validated finality');
+                }, transaction.network);
+                status.textContent = `Validated success on ${transaction.network}. Transaction ${hash}`;
+                showToast(`Payment validated on ${transaction.network}`, 'success');
                 preparedPayment = null;
                 await refreshAccountTelemetry(false);
             } catch (error) {
-                status.textContent = submitted
-                    ? `Submission status unknown or failed. Check transaction ${hash || 'hash unavailable'} before retrying; do not submit again yet.`
+                preparedPayment = null;
+                document.getElementById('sendConfirmCheckbox').checked = false;
+                status.textContent = error.transactionOutcome === 'validated_failed'
+                    ? `${error.message} Transaction ${hash}`
+                    : submitted
+                    ? `Submission status unknown or pending. Check transaction ${hash || 'hash unavailable'} before retrying; do not submit again yet.`
                     : String(error.message || 'Transaction was not submitted');
                 showToast(status.textContent, 'error');
             } finally {
@@ -1857,7 +1973,7 @@
                         command: 'account_info',
                         account: activeWallet.classicAddress,
                         ledger_index: 'validated'
-                    }), 'Wallet account');
+                    }), 'Wallet account', true);
                     const requestBase = { ledger_index: 'validated' };
                     const bookPromise = client.request({
                         command: 'book_offers',
@@ -1883,9 +1999,9 @@
                     const minimumOutput = formatQuoteFloor(quote.output * (1 - slippage / 100), outputAsset);
                     if (inputAsset.code === 'XRP') {
                         const balanceDrops = BigInt(info.account_data.Balance);
-                        const reserve = 10000000n;
+                        const reserve = BigInt(xrpl.xrpToDrops(accountReserveXrp.toFixed(6)));
                         if (balanceDrops < reserve + BigInt(xrpl.xrpToDrops(inputText))) {
-                            throw new Error('Not enough XRP for the swap and 10 XRP safety reserve');
+                            throw new Error(`Not enough XRP for the swap and ${accountReserveXrp.toFixed(2)} XRP safety hold`);
                         }
                     }
                     const tx = {
@@ -1899,9 +2015,10 @@
                     if (!/^\d+$/.test(String(filled.Fee || '')) || Number(filled.Fee) > MAX_TRANSACTION_FEE_DROPS) {
                         throw new Error('Network fee is invalid or exceeds the wallet safety limit');
                     }
-                    if (BigInt(info.account_data.Balance) < 10000000n + BigInt(filled.Fee) +
+                    const reserveDrops = BigInt(xrpl.xrpToDrops(accountReserveXrp.toFixed(6)));
+                    if (BigInt(info.account_data.Balance) < reserveDrops + BigInt(filled.Fee) +
                         (inputAsset.code === 'XRP' ? BigInt(filled.TakerGets) : 0n)) {
-                        throw new Error('Not enough XRP for the swap, network fee, and 10 XRP safety reserve');
+                        throw new Error(`Not enough XRP for the swap, network fee, and ${accountReserveXrp.toFixed(2)} XRP safety hold`);
                     }
                     return {
                         tx: filled, network, sender: activeWallet.classicAddress, inputAsset, outputAsset,
@@ -1935,6 +2052,7 @@
                 updateSwapConfirmButton();
                 return;
             }
+            const transaction = preparedSwap;
             transactionInProgress = true;
             updateSwapConfirmButton();
             let submitted = false;
@@ -1943,25 +2061,36 @@
             try {
                 await withXrplClient(async client => {
                     const ledger = requireValidatedResult(await client.request({ command: 'ledger', ledger_index: 'validated' }), 'Validated ledger');
-                    if (Number(ledger.ledger_index) >= preparedSwap.lastLedgerSequence) throw new Error('Quote transaction expired. Request a fresh quote.');
-                    const signed = activeWallet.sign(preparedSwap.tx);
+                    if (preparedSwap !== transaction || currentNetwork !== transaction.network) {
+                        throw new Error('Swap quote was canceled or the selected network changed');
+                    }
+                    if (Number(ledger.ledger_index) >= transaction.lastLedgerSequence) throw new Error('Quote transaction expired. Request a fresh quote.');
+                    const signed = activeWallet.sign(transaction.tx);
                     hash = signed.hash;
-                    status.textContent = `Signed locally. Submitting to ${preparedSwap.network} and waiting for validation…`;
+                    preparedSwap = null;
+                    status.textContent = `Signed locally. Submitting to ${transaction.network} and waiting for validation…`;
                     submitted = true;
                     const response = await client.submitAndWait(signed.tx_blob);
                     const result = response?.result || response;
                     const txResult = result?.meta?.TransactionResult;
-                    if (result?.validated !== true || txResult !== 'tesSUCCESS') {
-                        throw new Error(`Swap was not validated successfully (${txResult || 'validation pending'}).`);
+                    if (result?.validated === true && txResult !== 'tesSUCCESS') {
+                        const failure = new Error(`Swap failed on the validated ledger (${txResult || 'unknown result'}).`);
+                        failure.transactionOutcome = 'validated_failed';
+                        throw failure;
                     }
-                }, preparedSwap.network);
-                status.textContent = `Validated success on ${preparedSwap.network}. Transaction ${hash}`;
-                showToast(`XRPL swap validated on ${preparedSwap.network}`, 'success');
+                    if (result?.validated !== true) throw new Error('Swap submission returned without validated finality');
+                }, transaction.network);
+                status.textContent = `Validated success on ${transaction.network}. Transaction ${hash}`;
+                showToast(`XRPL swap validated on ${transaction.network}`, 'success');
                 preparedSwap = null;
                 await refreshAccountTelemetry(false);
             } catch (error) {
-                status.textContent = submitted
-                    ? `Submission status unknown or failed. Check transaction ${hash || 'hash unavailable'} before retrying; do not submit again yet.`
+                preparedSwap = null;
+                document.getElementById('swapConfirmCheckbox').checked = false;
+                status.textContent = error.transactionOutcome === 'validated_failed'
+                    ? `${error.message} Transaction ${hash}`
+                    : submitted
+                    ? `Submission status unknown or pending. Check transaction ${hash || 'hash unavailable'} before retrying; do not submit again yet.`
                     : String(error.message || 'Swap was not submitted');
                 showToast(status.textContent, 'error');
             } finally {
@@ -2030,7 +2159,6 @@
             const select = document.getElementById('sendAssetSelect');
             fillAssetSelect(select, walletAssets());
             if (accountTokenError) {
-                select.disabled = true;
                 select.title = accountTokenError;
             } else {
                 select.disabled = false;
@@ -2097,7 +2225,8 @@
             try {
                 const asset = selectedWalletAsset('sendAssetSelect');
                 parseDecimalToScaled(amount, asset.code === 'XRP' ? 6 : 15);
-                valid = Boolean(activeWallet && !isLocalSimulationMode && connectionStatus === 'verified' && !accountTokenError);
+                valid = Boolean(activeWallet && !isLocalSimulationMode && connectionStatus === 'verified' &&
+                    (asset.code === 'XRP' || !accountTokenError));
             } catch (error) {}
             if (valid) {
                 btn.disabled = false; btn.className = 'w-full py-4 rounded-2xl font-extrabold text-xs uppercase tracking-wider bg-cyan-400 text-slate-950 shadow-lg cursor-pointer min-h-[52px]';
@@ -2114,7 +2243,14 @@
             updateSendConfirmButton();
         }
 
-        function getContacts() { try { return JSON.parse(localStorage.getItem(STORAGE_KEY_CONTACTS) || '[]'); } catch (e) { return []; } }
+        function getContacts() {
+            try {
+                const stored = JSON.parse(localStorage.getItem(STORAGE_KEY_CONTACTS) || '[]');
+                return Array.isArray(stored)
+                    ? stored.filter(contact => contact && typeof contact.name === 'string' && typeof contact.address === 'string')
+                    : [];
+            } catch (e) { return []; }
+        }
         
         function autoFillMyAddress() {
             if (activeWallet) {
@@ -2153,7 +2289,7 @@
             container.innerHTML = c.map((x, idx) => `
                 <div class="p-2.5 bg-gray-950 rounded-xl flex items-center justify-between text-xs font-mono">
                     <div><div class="font-bold text-cyan-300">${escapeHtml(x.name)}</div><div class="text-[10px] text-slate-400 truncate max-w-[160px]">${escapeHtml(x.address)}</div></div>
-                    <button onclick="removeContact(${idx})" class="text-red-400 hover:text-red-300 p-1"><i class="ph-bold ph-trash"></i></button>
+                    <button data-action="removeContact" data-index="${idx}" class="text-red-400 hover:text-red-300 p-1"><i class="ph-bold ph-trash"></i></button>
                 </div>
             `).join('');
         }
@@ -2168,9 +2304,42 @@
 
         function openCommandModal(type) {
             closeAllModals();
-            if (type === 'send') { backToSendStep1(); document.getElementById('modalSend').classList.remove('hidden'); }
+            if (type === 'send') {
+                populateSendAssetDropdown();
+                backToSendStep1();
+                document.getElementById('sendDestInput').value = '';
+                document.getElementById('sendDestinationTagInput').value = '';
+                document.getElementById('sendAmountInput').value = '';
+                document.getElementById('sendConfirmCheckbox').checked = false;
+                document.getElementById('sendReviewStatus').textContent = 'Review the network, address, asset, amount, and fee before signing.';
+                document.getElementById('summarySendNetwork').textContent = currentNetwork;
+                document.getElementById('summarySendAsset').textContent = '—';
+                document.getElementById('summarySendAmount').textContent = '0 XRP';
+                document.getElementById('summarySendMaxDebit').textContent = '—';
+                document.getElementById('summarySendDest').textContent = 'r…';
+                document.getElementById('summarySendTag').textContent = '—';
+                document.getElementById('summarySendFee').textContent = 'Loading…';
+                document.getElementById('summarySendLastLedger').textContent = '—';
+                validateSendStep1();
+                validateSendStep2();
+                document.getElementById('sendNetworkNotice').textContent = isLocalSimulationMode
+                    ? 'Real payments are disabled in Local Simulation mode.'
+                    : `Selected network: ${currentNetwork}. A validated wallet balance is required.`;
+                document.getElementById('modalSend').classList.remove('hidden');
+            }
             else if (type === 'receive') document.getElementById('modalReceive').classList.remove('hidden');
-            else if (type === 'swap') document.getElementById('modalSwap').classList.remove('hidden');
+            else if (type === 'swap') {
+                populateSwapAssetDropdowns();
+                preparedSwap = null;
+                document.getElementById('swapQuotePanel').classList.add('hidden');
+                document.getElementById('swapConfirmCheckbox').checked = false;
+                document.getElementById('swapStatus').textContent = 'No transaction has been signed.';
+                document.getElementById('swapNetworkNotice').textContent = isLocalSimulationMode
+                    ? 'Real XRPL swaps are disabled in Local Simulation mode.'
+                    : `Selected network: ${currentNetwork}. Quotes use validated XRPL liquidity.`;
+                updateSwapConfirmButton();
+                document.getElementById('modalSwap').classList.remove('hidden');
+            }
             else if (type === 'streams') document.getElementById('modalStreams').classList.remove('hidden');
             else if (type === 'didModal') document.getElementById('modalDid').classList.remove('hidden');
         }
@@ -2189,7 +2358,11 @@
             closeAllModals();
         }
         function openBackupModal() { closeAllModals(); document.getElementById('modalBackup').classList.remove('hidden'); }
-        function revealBackupSeedNow() { document.getElementById('backupSeedBox').textContent = activeWallet ? activeWallet.seed : 'No seed'; }
+        function revealBackupSeedNow() {
+            const box = document.getElementById('backupSeedBox');
+            box.textContent = activeWallet ? activeWallet.seed : 'No seed';
+            window.setTimeout(() => { box.textContent = 'Seed hidden'; }, 30000);
+        }
 
         function toggleNetworkModal() {
             const modal = document.getElementById('modalNetwork');
@@ -2209,12 +2382,36 @@
             if (!NETWORKS[net]) return;
             isLocalSimulationMode = false;
             connectionStatus = 'unverified';
+            accountXrpBalance = 0;
+            accountSpendableXrp = 0;
+            accountReserveXrp = 10;
+            accountTokens = [];
+            accountTokenError = '';
+            networkReserveBaseXrp = 10;
+            networkReserveIncrementXrp = 0;
+            atomicSwaps = [];
+            activeStreams = [];
+            didCredentials = [];
             currentNetwork = net;
+            preparedPayment = null;
+            preparedSwap = null;
+            updateSendConfirmButton();
+            updateSwapConfirmButton();
             networkProbeStatus = 'not_checked';
             networkProbeLedger = null;
             networkProbeError = '';
             localStorage.setItem(STORAGE_KEY_NET, net);
             updateNetworkSelector();
+            if (activeWallet) {
+                document.getElementById('xrpTotalBalance').textContent = '—';
+                document.getElementById('xrpSpendableText').textContent = 'Spendable: unavailable';
+                document.getElementById('xrpReserveText').textContent = 'Safety hold: checking';
+                document.getElementById('fiatValuationText').textContent = 'Not available';
+                document.getElementById('balanceSourceLabel').textContent = 'Balance source: not verified';
+                renderTokenList();
+                renderSwapsList();
+                renderDidList();
+            }
             showToast(`Selected XRPL ${net}; checking the network and refreshing balances`, 'info');
             await checkSelectedNetwork();
             if (activeWallet) await refreshAccountTelemetry(true);
@@ -2222,15 +2419,122 @@
         async function enableLocalSimulation() {
             isLocalSimulationMode = true;
             connectionStatus = 'unverified';
+            preparedPayment = null;
+            preparedSwap = null;
             updateConnectionIndicators();
             closeAllModals();
             showToast('Local simulation enabled. No XRPL connection or transaction is active.', 'info');
             if (activeWallet) await refreshAccountTelemetry(false);
         }
-        function closeAllModals() { ['modalSend', 'modalReceive', 'modalSwap', 'modalStreams', 'modalDid', 'modalCredentials', 'modalContacts', 'modalNetwork', 'modalBackup'].forEach(id => document.getElementById(id).classList.add('hidden')); }
+        function closeAllModals() {
+            preparedPayment = null;
+            preparedSwap = null;
+            document.getElementById('backupSeedBox').textContent = 'Seed hidden';
+            ['modalSend', 'modalReceive', 'modalSwap', 'modalStreams', 'modalDid', 'modalCredentials', 'modalContacts', 'modalNetwork', 'modalBackup'].forEach(id => document.getElementById(id).classList.add('hidden'));
+            updateSendConfirmButton();
+            updateSwapConfirmButton();
+        }
         function copyWalletAddress() { if (activeWallet) copyTextToClipboard(activeWallet.classicAddress, 'Address Copied!'); }
 
+        function invalidateSwapQuote() {
+            preparedSwap = null;
+            document.getElementById('swapConfirmCheckbox').checked = false;
+            document.getElementById('swapQuotePanel').classList.add('hidden');
+            document.getElementById('swapStatus').textContent = 'Details changed. Request a new quote.';
+            updateSwapConfirmButton();
+        }
+
+        const ACTION_HANDLERS = {
+            toggleNetworkModal: () => toggleNetworkModal(),
+            lockWalletNow: () => lockWalletNow(),
+            startGuidedCreation: () => startGuidedCreation(),
+            showImportStep: () => showImportStep(),
+            resetOnboarding: () => resetOnboarding(),
+            regenerateNewKey: () => regenerateNewKey(),
+            toggleSeedVisibility: () => toggleSeedVisibility(),
+            copyGeneratedSeed: () => copyGeneratedSeed(),
+            goToPasswordSetup: () => goToPasswordSetup(),
+            confirmImportedCredentials: () => confirmImportedCredentials(),
+            finalizeVaultWithPassphrase: () => finalizeVaultWithPassphrase(),
+            attemptVaultUnlockWithPassphrase: () => attemptVaultUnlockWithPassphrase(),
+            wipeVaultConfirmation: () => wipeVaultConfirmation(),
+            copyWalletAddress: () => copyWalletAddress(),
+            refreshAccountTelemetry: element => refreshAccountTelemetry(element.dataset.argument === 'true'),
+            openContactsModal: () => openContactsModal(),
+            openCredentialsModal: () => openCredentialsModal(),
+            openBackupModal: () => openBackupModal(),
+            addSimulatedFunding: () => addSimulatedFunding(),
+            openCommandModal: element => openCommandModal(element.dataset.value),
+            switchDashTab: element => switchDashTab(element.dataset.value),
+            closeAllModals: () => closeAllModals(),
+            openContactsPicker: () => openContactsPicker(),
+            goToSendStep2: () => goToSendStep2(),
+            backToSendStep1: () => backToSendStep1(),
+            backToSendStep2: () => backToSendStep2(),
+            goToSendStep3: () => goToSendStep3(),
+            submitPreparedPayment: () => submitPreparedPayment(),
+            prepareSwapQuote: () => prepareSwapQuote(),
+            submitPreparedSwap: () => submitPreparedSwap(),
+            createPaymentStream: () => createPaymentStream(),
+            publishDidCredential: () => publishDidCredential(),
+            requestIssuerCredential: () => requestIssuerCredential(),
+            autoFillMyAddress: () => autoFillMyAddress(),
+            saveNewContact: () => saveNewContact(),
+            switchNetwork: element => switchNetwork(element.dataset.value),
+            checkSelectedNetwork: () => checkSelectedNetwork(),
+            enableLocalSimulation: () => enableLocalSimulation(),
+            revealBackupSeedNow: () => revealBackupSeedNow(),
+            downloadAquaVaultFile: () => downloadAquaVaultFile(),
+            removeContact: element => removeContact(Number(element.dataset.index)),
+            switchImportTab: element => switchImportTab(element.dataset.value)
+        };
+        const INPUT_HANDLERS = {
+            validateImportedSeed,
+            validateImportedMnemonic,
+            validateMasterPassphrase,
+            validateSendStep1,
+            validateSendStep2,
+            invalidateSwapQuote
+        };
+        const CHANGE_HANDLERS = {
+            handleAquaFileUpload: (_element, event) => handleAquaFileUpload(event),
+            checkSeedSaved: () => checkSeedSaved(),
+            validateSendStep2,
+            updateSendConfirmButton,
+            updateSwapConfirmButton,
+            invalidateSwapQuote
+        };
+
+        function runDelegatedHandler(handler, element, event) {
+            try {
+                const result = handler(element, event);
+                if (result && typeof result.catch === 'function') {
+                    result.catch(error => showToast(String(error.message || 'Action failed'), 'error'));
+                }
+            } catch (error) {
+                showToast(String(error.message || 'Action failed'), 'error');
+            }
+        }
+
+        document.addEventListener('click', event => {
+            const element = event.target.closest('[data-action]');
+            if (!element || element.disabled) return;
+            const handler = ACTION_HANDLERS[element.dataset.action];
+            if (handler) runDelegatedHandler(handler, element, event);
+        });
+        document.addEventListener('input', event => {
+            const handler = INPUT_HANDLERS[event.target.dataset.inputAction];
+            if (handler) runDelegatedHandler(handler, event.target, event);
+        });
+        document.addEventListener('change', event => {
+            const handler = CHANGE_HANDLERS[event.target.dataset.changeAction];
+            if (handler) runDelegatedHandler(handler, event.target, event);
+        });
+
         window.addEventListener('DOMContentLoaded', () => {
+            document.title = `AQUA WALLET // XRPL Universal Command Center v${APP_VERSION}`;
+            document.getElementById('headerVersionLabel').textContent = `v${APP_VERSION}`;
+            document.getElementById('appVersionLabel').textContent = `AQUA WALLET v${APP_VERSION}`;
             updateNetworkSelector();
             updateConnectionIndicators();
             const vault = localStorage.getItem(STORAGE_KEY_VAULT);

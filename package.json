@@ -2,7 +2,8 @@
   "name": "aqua-wallet-vault-tests",
   "private": true,
   "scripts": {
-    "test": "node tests/vault-backup.browser.test.cjs"
+    "test": "node tests/release-policy.test.cjs && node tests/vault-backup.browser.test.cjs",
+    "test:testnet": "node tests/xrpl-testnet.integration.test.cjs"
   },
   "devDependencies": {
     "playwright": "^1.64.1"

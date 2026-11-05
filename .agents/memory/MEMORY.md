@@ -1,2 +1,3 @@
 - [Public repository content](public-repository-content.md) — Keep GitHub-tracked docs and metadata platform-neutral; keep local run configuration untracked.
 - [Browser wallet security](browser-wallet-security.md) — Keep the browser architecture and prioritize dependency integrity and safe rendering of stored values.
+- [XRPL browser transport](xrpl-browser-transport.md) — Use WebSocket JSON-RPC in browser apps; public HTTP endpoints may block cross-origin reads.
